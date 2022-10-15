@@ -1,0 +1,9 @@
+**.pyc
+.idea/*
+*.jpg
+*.so
+*egg-info*
+build/
+dist/
+/.vscode
+/*.png
