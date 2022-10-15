@@ -31,11 +31,11 @@ datasets/
 
 ### MODELS
 
-Download the trained models at [Onedrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/EgOQzGZn9A5DlaQhgpTtHBwBGWEB57mpYy4SbmpZJMmMyQ?e=0z9Xd2) and put them in the folder ./output.
+Download the trained models at [Onedrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/EgOQzGZn9A5DlaQhgpTtHBwB2Bwyx8qmvLauiHFcJbnGSw?e=EZ60La) (password: groupji) and put them in the folder `./output`.
 
 
 ## Requirements
-* Ubuntu 16.04/18.04, CUDA 10.1/10.2, python >= 3.6, PyTorch >= 1.6, torchvision
+* Ubuntu 16.04/18.04/20.04, CUDA 10.1/10.2, python >= 3.6, PyTorch >= 1.6, torchvision
 * Install `detectron2` from [source](https://github.com/facebookresearch/detectron2)
 * `sh scripts/install_deps.sh`
 * Compile the cpp extension for `farthest points sampling (fps)`:
