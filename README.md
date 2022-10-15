@@ -11,8 +11,8 @@ Download the 6D pose datasets from the
 [BOP website](https://bop.felk.cvut.cz/datasets/) and
 [VOC 2012](https://pjreddie.com/projects/pascal-voc-dataset-mirror/)
 for background images.
-Please also download the `image_sets` and `test_bboxes` from
-here [OneDrive](#TODO).
+Please also download the  `test_bboxes` from
+here [OneDrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/Eq_2aCC0RfhNisW8ZezYtIoBGfJiRIZnFxbITuQrJ56DjA?e=hPbJz2) (password: groupji).
 
 The structure of `datasets` folder should look like below:
 ```
