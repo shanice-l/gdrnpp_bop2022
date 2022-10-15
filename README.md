@@ -23,7 +23,7 @@ datasets/
 See [INSTALL.md](./docs/INSTALL.md)
 
 ## Detection
-TODO
+TODO: tjw
 
 ## Pose Estimation
 
@@ -42,3 +42,7 @@ The difference between this repo and gdrn conference version mainly including:
 `./core/gdrn_modeling/test_gdrn.sh <config_path> <gpu_ids> <ckpt_path> (other args)`
 
 The trained models can be found at [Onedrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/EgOQzGZn9A5DlaQhgpTtHBwBGWEB57mpYy4SbmpZJMmMyQ?e=0z9Xd2)
+
+
+## Pose Refinement
+TODO: rudy
