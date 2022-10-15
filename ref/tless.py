@@ -23,7 +23,7 @@ train_render_dir = osp.join(dataset_root, "train_render_reconst")
 test_dir = osp.join(dataset_root, "test_primesense")
 
 # model_dir = osp.join(dataset_root, "models_reconst")  # use recon models as default
-model_dir = osp.join(dataset_root, "models_cad") 
+model_dir = osp.join(dataset_root, "models_cad")
 model_cad = osp.join(dataset_root, "models_cad")
 model_reconst_dir = osp.join(dataset_root, "models_reconst")
 model_eval_dir = osp.join(dataset_root, "models_eval")

@@ -33,7 +33,7 @@ INPUT = dict(
 
 SOLVER = dict(
     IMS_PER_BATCH=48,
-    TOTAL_EPOCHS=40, # 30
+    TOTAL_EPOCHS=40,  # 30
     LR_SCHEDULER_NAME="flat_and_anneal",
     ANNEAL_METHOD="cosine",  # "cosine"
     ANNEAL_POINT=0.72,
@@ -44,7 +44,10 @@ SOLVER = dict(
 )
 
 DATASETS = dict(
-    TRAIN=("tless_train_primesense", "tless_train_pbr",),
+    TRAIN=(
+        "tless_train_primesense",
+        "tless_train_pbr",
+    ),
     TEST=("tless_bop_test_primesense",),
     # AP        AP50    AP75    AR      inf.time
     DET_FILES_TEST=("datasets/BOP_DATASETS/tless/test/test_bboxes/yolox_x_640_tless_real_pbr_tless_bop_test.json",),

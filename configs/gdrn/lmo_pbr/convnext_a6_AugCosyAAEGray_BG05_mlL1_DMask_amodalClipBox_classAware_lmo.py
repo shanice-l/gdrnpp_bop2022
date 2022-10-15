@@ -32,7 +32,7 @@ INPUT = dict(
 
 SOLVER = dict(
     IMS_PER_BATCH=48,
-    TOTAL_EPOCHS=40, # 30
+    TOTAL_EPOCHS=40,  # 30
     LR_SCHEDULER_NAME="flat_and_anneal",
     ANNEAL_METHOD="cosine",  # "cosine"
     ANNEAL_POINT=0.72,
@@ -140,4 +140,3 @@ VAL = dict(
 )
 
 TEST = dict(EVAL_PERIOD=0, VIS=False, TEST_BBOX_TYPE="est")  # gt | est
-

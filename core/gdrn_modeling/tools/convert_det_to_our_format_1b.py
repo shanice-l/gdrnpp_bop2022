@@ -5,11 +5,17 @@ import json
 import os
 
 parser = argparse.ArgumentParser(description="convert det from bop format to ours")
-parser.add_argument("--idir", type=str, default="/data1/tangjw/projects/YOLOX_benckmark/master/object_pose_benchmark/output/yolox/bop_pbr/multi_scale_test", help="input path")
+parser.add_argument(
+    "--idir",
+    type=str,
+    default="/data1/tangjw/projects/YOLOX_benckmark/master/object_pose_benchmark/output/yolox/bop_pbr/multi_scale_test",
+    help="input path",
+)
 parser.add_argument("--odir", type=str, default="datasets/BOP_DATASETS/", help="output path")
 args = parser.parse_args()
 
 dataset_names = ["hb", "icbin", "itodd", "lmo", "tless", "tudl", "ycbv"]
+
 
 def convert_format(ipath, opath):
     ds = mmcv.load(ipath)
@@ -80,8 +86,8 @@ if __name__ == "__main__":
     for json_file in json_files:
         for dset in dataset_names:
             if dset in json_file:
-                break 
-    
+                break
+
         ipath = os.path.join(args.idir, json_file)
 
         odir = os.path.join(args.odir, dset, "test/test_bboxes")
