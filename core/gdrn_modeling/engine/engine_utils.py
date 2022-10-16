@@ -240,6 +240,31 @@ def batch_data_test(cfg, data, device="cuda"):
 
     return batch
 
+def batch_data_inference_roi(cfg, data, device='cuda'):
+    net_cfg = cfg.MODEL.POSE_NET
+    g_head_cfg = net_cfg.GEO_HEAD
+    batch = {}
+    batch["roi_img"] = torch.cat([d["roi_img"] for d in data], dim=0).to(device, non_blocking=True)
+    bs = batch["roi_img"].shape[0]
+
+
+    batch["roi_cam"] = torch.cat([d["cam"] for d in data], dim=0).to(device, non_blocking=True)
+    batch["roi_center"] = torch.cat([d["bbox_center"] for d in data], dim=0).to(
+        device=device, dtype=torch.float32, non_blocking=True
+    )
+    batch["roi_scale"] = [torch.as_tensor(d["scale"], device=device, dtype=torch.float32) for d in data]
+    batch["roi_scale"] = torch.cat(batch["roi_scale"], dim=0).to(
+        device=device, dtype=torch.float32, non_blocking=True)
+    batch["resize_ratio"] = [torch.as_tensor(d["resize_ratio"], device=device, dtype=torch.float32) for d in data]  # out_res/scale
+    batch["resize_ratio"] = torch.cat(batch["resize_ratio"], dim=0).to(
+        device=device, dtype=torch.float32, non_blocking=True)
+    # get crop&resized K -------------------------------------------
+    roi_crop_xy_batch = batch["roi_center"] - batch["roi_scale"].view(bs, -1) / 2
+    out_res = net_cfg.OUTPUT_RES
+    roi_resize_ratio_batch = out_res / batch["roi_scale"].view(bs, -1)
+    batch["roi_zoom_K"] = get_K_crop_resize(batch["roi_cam"], roi_crop_xy_batch, roi_resize_ratio_batch)
+    return batch
+
 
 def get_renderer(cfg, data_ref, obj_names, gpu_id=None):
     """for rendering the targets (xyz) online."""

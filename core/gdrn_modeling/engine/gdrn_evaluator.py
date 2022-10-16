@@ -29,7 +29,7 @@ from lib.utils.mask_utils import binary_mask_to_rle
 from lib.utils.utils import dprint
 from lib.vis_utils.image import grid_show, vis_image_bboxes_cv2, vis_image_mask_cv2
 
-from .engine_utils import batch_data, get_out_coor, get_out_mask
+from .engine_utils import batch_data, get_out_coor, get_out_mask, batch_data_inference_roi
 from .test_utils import eval_cached_results, save_and_eval_results, to_list
 
 
@@ -61,19 +61,29 @@ class GDRN_Evaluator(DatasetEvaluator):
         self.models_3d = [
             inout.load_ply(model_path, vertex_scale=self.data_ref.vertex_scale) for model_path in self.model_paths
         ]
-        if cfg.DEBUG:
+        if cfg.DEBUG or cfg.TEST.USE_DEPTH_REFINE:
             from lib.render_vispy.model3d import load_models
             from lib.render_vispy.renderer import Renderer
 
-            self.ren = Renderer(size=(self.data_ref.width, self.data_ref.height), cam=self.data_ref.camera_matrix)
+            if cfg.TEST.USE_DEPTH_REFINE:
+                net_cfg = cfg.MODEL.POSE_NET
+                width = net_cfg.OUTPUT_RES
+                height = width
+            else:
+                width = self.data_ref.width
+                height = self.data_ref.height
+
+            self.ren = Renderer(size=(width, height), cam=self.data_ref.camera_matrix)
             self.ren_models = load_models(
                 model_paths=self.data_ref.model_paths,
                 scale_to_meter=0.001,
                 cache_dir=".cache",
-                texture_paths=self.data_ref.texture_paths,
+                texture_paths=self.data_ref.texture_paths if cfg.TEST.DEBUG else None,
                 center=False,
                 use_cache=True,
             )
+
+        self.depth_refine_threshold = cfg.TEST.DEPTH_REFINE_THRESHOLD
 
         # eval cached
         if cfg.VAL.EVAL_CACHED or cfg.VAL.EVAL_PRINT_ONLY:
@@ -163,6 +173,9 @@ class GDRN_Evaluator(DatasetEvaluator):
                 return self.process_net_and_pnp(inputs, outputs, out_dict, pnp_type="ransac_rot")
             else:
                 raise NotImplementedError
+
+        if cfg.TEST.USE_DEPTH_REFINE:
+            return self.process_depth_refine(inputs, outputs, out_dict)
 
         out_rots = out_dict["rot"].detach().to(self._cpu_device).numpy()
         out_transes = out_dict["trans"].detach().to(self._cpu_device).numpy()
@@ -445,6 +458,122 @@ class GDRN_Evaluator(DatasetEvaluator):
                 item["time"] = output["time"]
             self._predictions.extend(json_results)
 
+    def process_depth_refine(self, inputs, outputs, out_dict):
+        """
+        Args:
+            inputs: the inputs to a model.
+                It is a list of dict. Each dict corresponds to an image and
+                contains keys like "height", "width", "file_name", "image_id", "scene_id".
+            outputs:
+        """
+        cfg = self.cfg
+        net_cfg = cfg.MODEL.POSE_NET
+        out_coor_x = out_dict["coor_x"].detach()
+        out_coor_y = out_dict["coor_y"].detach()
+        out_coor_z = out_dict["coor_z"].detach()
+        out_xyz = get_out_coor(cfg, out_coor_x, out_coor_y, out_coor_z)
+        out_xyz = out_xyz.to(self._cpu_device) #.numpy()
+
+        out_mask = get_out_mask(cfg, out_dict["mask"].detach())
+        out_mask = out_mask.to(self._cpu_device) #.numpy()
+        out_rots = out_dict["rot"].detach().to(self._cpu_device).numpy()
+        out_transes = out_dict["trans"].detach().to(self._cpu_device).numpy()
+
+        zoom_K = batch_data_inference_roi(cfg, inputs)['roi_zoom_K']
+
+        out_i = -1
+        for i, (_input, output) in enumerate(zip(inputs, outputs)):
+            start_process_time = time.perf_counter()
+            json_results = []
+            for inst_i in range(len(_input["roi_img"])):
+                out_i += 1
+
+                K = _input["cam"][inst_i].cpu().numpy().copy()
+                # print('K', K)
+
+                K_crop = zoom_K[inst_i].cpu().numpy().copy()
+                # print('K_crop', K_crop)
+
+                roi_label = _input["roi_cls"][inst_i]  # 0-based label
+                score = _input["score"][inst_i]
+                roi_label, cls_name = self._maybe_adapt_label_cls_name(roi_label)
+                if cls_name is None:
+                    continue
+
+                scene_im_id_split = _input["scene_im_id"][inst_i].split("/")
+                scene_id = scene_im_id_split[0]
+                im_id = int(scene_im_id_split[1])
+                obj_id = self.data_ref.obj2id[cls_name]
+
+                # get pose
+                xyz_i = out_xyz[out_i].permute(1, 2, 0)
+                mask_i = np.squeeze(out_mask[out_i])
+
+                rot_est = out_rots[out_i]
+                trans_est = out_transes[out_i]
+                pose_est = np.hstack([rot_est, trans_est.reshape(3, 1)])
+                depth_sensor_crop = _input['roi_depth'][inst_i].cpu().numpy().copy().squeeze()
+                depth_sensor_mask_crop = depth_sensor_crop > 0
+
+                net_cfg = cfg.MODEL.POSE_NET
+                crop_res = net_cfg.OUTPUT_RES
+
+
+
+                for _ in range(cfg.TEST.DEPTH_REFINE_ITER):
+                    self.ren.clear()
+                    self.ren.set_cam(K_crop)
+                    self.ren.draw_model(self.ren_models[self.data_ref.objects.index(cls_name)], pose_est)
+                    ren_im, ren_dp = self.ren.finish()
+                    ren_mask = ren_dp > 0
+
+                    if self.cfg.TEST.USE_COOR_Z_REFINE:
+                        coor_np = xyz_i.numpy()
+                        coor_np_t = coor_np.reshape(-1, 3)
+                        coor_np_t = coor_np_t.T
+                        coor_np_r = rot_est @ coor_np_t
+                        coor_np_r = coor_np_r.T
+                        coor_np_r = coor_np_r.reshape(crop_res, crop_res, 3)
+                        query_img_norm = coor_np_r[:, :, -1] * mask_i.numpy()
+                        query_img_norm = query_img_norm * ren_mask * depth_sensor_mask_crop
+                    else:
+                        query_img = xyz_i
+
+                        query_img_norm = torch.norm(query_img, dim=-1) * mask_i
+                        query_img_norm = query_img_norm.numpy() * ren_mask * depth_sensor_mask_crop
+                    norm_sum = query_img_norm.sum()
+                    if norm_sum == 0:
+                        continue
+                    query_img_norm /= norm_sum
+                    norm_mask = query_img_norm > (query_img_norm.max() * self.depth_refine_threshold)
+                    yy, xx = np.argwhere(norm_mask).T  # 2 x (N,)
+                    depth_diff = depth_sensor_crop[yy, xx] - ren_dp[yy, xx]
+                    depth_adjustment = np.median(depth_diff)
+
+
+
+                    yx_coords = np.meshgrid(np.arange(crop_res), np.arange(crop_res))
+                    yx_coords = np.stack(yx_coords[::-1], axis=-1)  # (crop_res, crop_res, 2yx)
+                    yx_ray_2d = (yx_coords * query_img_norm[..., None]).sum(axis=(0, 1))  # y, x
+                    ray_3d = np.linalg.inv(K_crop) @ (*yx_ray_2d[::-1], 1)
+                    ray_3d /= ray_3d[2]
+
+                    trans_delta = ray_3d[:, None] * depth_adjustment
+                    trans_est = trans_est + trans_delta.reshape(3)
+                    pose_est = np.hstack([rot_est, trans_est.reshape(3, 1)])
+
+                json_results.extend(
+                    self.pose_prediction_to_json(
+                        pose_est, scene_id, im_id, obj_id=obj_id, score=score, pose_time=output["time"], K=K
+                    )
+                )
+            output["time"] += time.perf_counter() - start_process_time
+
+            # process time for this image
+            for item in json_results:
+                item["time"] = output["time"]
+            self._predictions.extend(json_results)
+
     def evaluate(self):
         # bop toolkit eval in subprocess, no return value
         if self._distributed:
@@ -601,7 +730,7 @@ def gdrn_inference_on_dataset(cfg, model, data_loader, evaluator, amp_test=False
             #         show_titles.extend(["coord_2d_x", "coord_2d_y"])
             #         grid_show(show_ims, show_titles, row=1, col=3)
 
-            if cfg.INPUT.WITH_DEPTH:
+            if cfg.INPUT.WITH_DEPTH and "depth" in cfg.MODEL.POSE_NET.NAME.lower():
                 inp = torch.cat([batch["roi_img"], batch["roi_depth"]], dim=1)
             else:
                 inp = batch["roi_img"]
