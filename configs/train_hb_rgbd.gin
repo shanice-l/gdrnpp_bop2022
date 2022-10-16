@@ -1,0 +1,8 @@
+BOPObjectDataset.ds_dir = "local_data/bop_datasets/hb"
+BOPDataset.ds_dir = "local_data/bop_datasets/hb"
+Pytorch3DRenderer.dataset_name = "hb"
+
+gin_globals.train_splits = [({'split':'train_pbr', 'visib_fract_minimum': 0.1, 'use_augmentation': True}, 1)]
+gin_globals.val_splits = [({'split':'val_primesense', 'check_image_exists':True}, 1)]
+
+load_detector.run_id = "detector-bop-hb-pbr--497808"

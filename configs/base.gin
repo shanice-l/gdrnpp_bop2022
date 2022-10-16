@@ -1,0 +1,50 @@
+# Renderer settings
+Pytorch3DRenderer.device = "cuda"
+
+# Optimizer and LR scheduler
+gin_globals.clip = 10.0
+get_optim.warmup_length = 10000
+get_optim.optimizer_cls = @torch.optim.AdamW
+torch.optim.AdamW.lr = 3e-4
+torch.optim.AdamW.weight_decay = 1e-5
+get_optim.scheduler_cls = @torch.optim.lr_scheduler.StepLR
+torch.optim.lr_scheduler.StepLR.gamma = 0.5
+torch.optim.lr_scheduler.StepLR.step_size = 20000
+
+# Training Data generation
+add_noise.euler_deg_std = (15, 15, 15)
+add_noise.trans_std = (0.01, 0.01, 0.05)
+
+# Misc
+make_bop_symmetries.n_symmetries_continuous = 64
+make_bop_symmetries.n_total_symmetries = 64
+geodesic_and_flow_loss.renderer = @Pytorch3DRenderer()
+gin_globals.val_freq = 3000
+gin_globals.val_size = 480
+gin_globals.print_freq = 1000
+
+crop_inputs.renderer = @Pytorch3DRenderer()
+forward_pass.use_detector = False
+
+
+##################
+# RAFT parameters
+##################
+
+
+SOLVER_METHOD = "BD-PnP"
+
+RaftSe3.hdim=128
+RaftSe3.cdim=128
+RaftSe3.fdim=128
+RaftSe3.solver_method = %SOLVER_METHOD
+
+raft_model.forward.renderer = @Pytorch3DRenderer()
+
+geodesic_and_flow_loss.ITER_GAMMA = 0.8
+geodesic_and_flow_loss.solver_method = %SOLVER_METHOD
+geodesic_and_flow_loss.TARGET_WEIGHT = 3.3
+geodesic_and_flow_loss.GEODESIC_WEIGHT = 10.0
+
+CorrBlock.num_levels=4
+CorrBlock.radius=3

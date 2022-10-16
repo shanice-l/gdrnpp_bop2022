@@ -1,66 +1,50 @@
-## GDRNPP for BOP2022
+# GDRNPP Refinement
+The refinement module of GDRNPP.
 
-This repo provides code and models for GDRNPP_BOP2022.
-
-TODO: add authors
-
-## Path Setting
-
-### Dataset Preparation
-Download the 6D pose datasets from the
-[BOP website](https://bop.felk.cvut.cz/datasets/) and
-[VOC 2012](https://pjreddie.com/projects/pascal-voc-dataset-mirror/)
-for background images.
-Please also download the  `test_bboxes` from
-here [OneDrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/Eq_2aCC0RfhNisW8ZezYtIoBGfJiRIZnFxbITuQrJ56DjA?e=hPbJz2) (password: groupji).
-
-The structure of `datasets` folder should look like below:
+## Environment
+Create a new anaconda environment using the provided .yaml file.
 ```
-datasets/
-├── BOP_DATASETS   # https://bop.felk.cvut.cz/datasets/
-    ├──lm
-    ├──lmo
-    ├──ycbv
-    ├──icbin
-    ├──hb
-    ├──itodd
-    ├──tless
-└──VOCdevkit
+conda env create -f environment.yaml
+conda activate refine
 ```
 
+## Preparing Data
+Link the datasets in the following folders with symlink.
+```Shell
+├── local_data
+    ├── VOCdevkit
+        ├── VOC2012
+    ├── bop_datasets
+        ├── hb
+        ├── icbin
+        ├── itodd
+        ├── lm
+        ├── lmo
+        ├── tless
+        ├── tudl
+        ├── ycbv
+```
 
-### MODELS
+## Training
+We train a model separately for each of the BOP datasets. To train the TUDL refinement model, run
+```
+python train.py --dataset ycbv --batch_size 12 --num_inner_loops 10 --num_solver_steps 3 [--pbr_only]
+```
+To train a refinement model on other BOP datasets, replace `ycbv` with one of the following: `tless`, `lmo`, `hb`, `tudl`, `icbin`, `itodd`
 
-Download the trained models at [Onedrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/EgOQzGZn9A5DlaQhgpTtHBwB2Bwyx8qmvLauiHFcJbnGSw?e=EZ60La) (password: groupji) and put them in the folder `./output`.
 
+## Testing
+1. Generate GDRN results with save_gdrn.sh and put the trained RAFT models in folder "model_weights".
+2. Run
+```
+./test_fast.sh <DATASET> <RESULT_PATH> <GPU_ID>
+```
+Use "test_fast_pbr.sh" for PBR results of YCB-V, T-LESS and TUD-L.
+3. Run
+```
+python -m additional_scripts.convert_result --tar_dir <TAR_DIR> --dataset <DATASET>
+```
 
-## Requirements
-* Ubuntu 16.04/18.04/20.04, CUDA 10.1/10.2, python >= 3.6, PyTorch >= 1.6, torchvision
-* Install `detectron2` from [source](https://github.com/facebookresearch/detectron2)
-* `sh scripts/install_deps.sh`
-* Compile the cpp extension for `farthest points sampling (fps)`:
-    ```
-    sh core/csrc/compile.sh
-    ```
+## Acknowledgement
 
-## Detection
-TODO: tjw
-
-## Pose Estimation
-
-The difference between this repo and gdrn conference version mainly including:
-
-* Domain Randomization: We used stronger domain randomization operations than the conference version during training.
-* Network Architecture: We used a more powerful backbone Convnext rather than resnet-34,  and two  mask heads for predicting amodal mask and visible mask separately.
-* Other training details, such as learning rate, weight decay, visible threshold, and bounding box type.
-
-### Training 
-
-`./core/gdrn_modeling/train_gdrn.sh <config_path> <gpu_ids> (other args)`
-
-### Testing 
-
-`./core/gdrn_modeling/test_gdrn.sh <config_path> <gpu_ids> <ckpt_path> (other args)`
-
-## Pose Refinement
-TODO: rudy
+This repository makes extensive use of code from the [Coupled-Iterative-Refinement](https://github.com/princeton-vl/Coupled-Iterative-Refinement) and [Cosypose](https://github.com/ylabbe/cosypose) Github repository. We thank the authors for open sourcing their implementation.

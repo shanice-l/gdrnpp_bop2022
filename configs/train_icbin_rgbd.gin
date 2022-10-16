@@ -1,0 +1,9 @@
+BOPObjectDataset.ds_dir = "local_data/bop_datasets/icbin"
+BOPDataset.ds_dir = "local_data/bop_datasets/icbin"
+Pytorch3DRenderer.dataset_name = "icbin"
+
+gin_globals.train_splits = [({'split':'train_pbr', 'visib_fract_minimum':0.1, 'use_augmentation': True}, 1)]
+gin_globals.val_splits = [({'split':'train_pbr', 'visib_fract_minimum':0.1, 'use_augmentation': True}, 4)]
+
+load_detector.run_id = "detector-bop-icbin-pbr--947409"
+make_bop_symmetries.n_total_symmetries = 128

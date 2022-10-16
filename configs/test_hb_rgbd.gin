@@ -1,0 +1,17 @@
+BOPObjectDataset.ds_dir = "local_data/bop_datasets/hb"
+BOPDataset.ds_dir = "local_data/bop_datasets/hb"
+Pytorch3DRenderer.dataset_name = "hb"
+
+gin_globals.test_splits = [({'split':'test_primesense', "only_bop19_test": True}, 1)]
+
+load_detector.run_id = "detector-bop-hb-pbr--497808"
+load_efficientnet.coarse_run_id = "coarse-bop-hb-pbr--70752"
+
+gin_globals.dataset_name = "hb"
+gin_globals.save_img_prob = 0.02
+
+get_detections.mask_th = 0.4
+get_detections.detection_th = 0.0
+
+crop_inputs.renderer = @Pytorch3DRenderer()
+generate_pose_from_detections.renderer = @Pytorch3DRenderer()

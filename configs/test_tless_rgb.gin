@@ -1,0 +1,20 @@
+BOPObjectDataset.ds_dir = "local_data/bop_datasets/tless"
+BOPDataset.ds_dir = "local_data/bop_datasets/tless"
+Pytorch3DRenderer.dataset_name = "tless"
+
+gin_globals.test_splits = [({'split':'test_primesense', "only_bop19_test": True}, 1)]
+
+load_detector.run_id = "detector-bop-tless-synt+real--452847"
+load_efficientnet.coarse_run_id = "coarse-bop-tless-synt+real--160982"
+
+gin_globals.dataset_name = "tless"
+gin_globals.save_img_prob = 0.02
+
+get_detections.mask_th = 0.4
+get_detections.detection_th = 0.0
+
+crop_inputs.renderer = @Pytorch3DRenderer()
+generate_pose_from_detections.renderer = @Pytorch3DRenderer()
+
+SOLVER_METHOD='Modified BD-PnP'
+get_perturbations.extra_views = True

@@ -1,0 +1,8 @@
+BOPObjectDataset.ds_dir = "local_data/bop_datasets/ycbv"
+BOPDataset.ds_dir = "local_data/bop_datasets/ycbv"
+Pytorch3DRenderer.dataset_name = "ycbv"
+
+gin_globals.train_splits = [({'split':'train_synt', 'visib_fract_minimum':0.1, 'use_augmentation': True}, 1), ({'split':'train_real', 'visib_fract_minimum':0.1, 'use_augmentation': True}, 3)]
+gin_globals.val_splits = [({'split':'train_real', 'visib_fract_minimum':0.1, 'use_augmentation': True}, 1)]
+
+load_detector.run_id = "detector-bop-ycbv-synt+real--292971"

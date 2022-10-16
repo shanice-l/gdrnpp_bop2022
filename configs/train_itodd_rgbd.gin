@@ -1,0 +1,9 @@
+BOPObjectDataset.ds_dir = "local_data/bop_datasets/itodd"
+BOPDataset.ds_dir = "local_data/bop_datasets/itodd"
+Pytorch3DRenderer.dataset_name = "itodd"
+
+gin_globals.train_splits = [({'split':'train_pbr', 'visib_fract_minimum':0.1}, 1)]
+gin_globals.val_splits = [({'split':'val'}, 12)]
+
+load_detector.run_id = "detector-bop-itodd-pbr--509908"
+make_bop_symmetries.n_total_symmetries = 128

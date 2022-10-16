@@ -1,0 +1,8 @@
+BOPObjectDataset.ds_dir = "local_data/bop_datasets/tudl"
+BOPDataset.ds_dir = "local_data/bop_datasets/tudl"
+Pytorch3DRenderer.dataset_name = "tudl"
+
+gin_globals.train_splits = [({'split':'train_pbr', 'visib_fract_minimum':0.1, 'use_augmentation': True}, 3), ({'split':'train_real', 'visib_fract_minimum':0.1, 'use_augmentation': True}, 4)]
+gin_globals.val_splits = [({'split':'train_real', 'visib_fract_minimum':0.1, 'use_augmentation': True}, 1)]
+
+load_detector.run_id = "detector-bop-tudl-synt+real--298779"

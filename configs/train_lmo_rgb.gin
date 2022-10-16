@@ -1,0 +1,10 @@
+BOPObjectDataset.ds_dir = "local_data/bop_datasets/lm"
+Pytorch3DRenderer.dataset_name = "lm"
+
+gin_globals.train_splits = [({'split':'train_pbr', "ds_dir": "local_data/bop_datasets/lm", 'visib_fract_minimum':0.1, 'use_augmentation': True}, 1)]
+gin_globals.val_splits = [({'split':'train_pbr', "ds_dir": "local_data/bop_datasets/lm", 'visib_fract_minimum':0.1, 'use_augmentation': True}, 1)]
+
+SOLVER_METHOD='Modified BD-PnP'
+
+load_detector.run_id = "detector-bop-lmo-pbr--517542"
+BOPDataset.load_depth = False
