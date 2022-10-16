@@ -167,4 +167,8 @@ TEST = dict(
     # net_ransac_pnp_rot (net_init + ransanc pnp --> net t + pnp R)
     PNP_TYPE="ransac_pnp",
     PRECISE_BN=dict(ENABLED=False, NUM_ITER=200),
+    USE_DEPTH_REFINE=False,
+    DEPTH_REFINE_ITER=2,
+    DEPTH_REFINE_THRESHOLD=0.8,
+    USE_COOR_Z_REFINE=False
 )
