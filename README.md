@@ -28,11 +28,11 @@ Link the datasets in the following folders with symlink.
 The pretrained models are available on [onedrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/EgT-saAOPtROonp9o_nmPDQBeIO2x7RjvhMSXhMMTMgrlg?e=L2bX2f) (password: groupji).
 
 ## Training
-We train a model separately for each of the BOP datasets. To train the TUDL refinement model, run
+We train a model separately for each of the BOP datasets. To train the TUD-L refinement model, run
 ```
-python train.py --dataset ycbv --batch_size 12 --num_inner_loops 10 --num_solver_steps 3 [--pbr_only]
+python train.py --dataset tudl --batch_size 12 --num_inner_loops 10 --num_solver_steps 3 [--pbr_only]
 ```
-To train a refinement model on other BOP datasets, replace `ycbv` with one of the following: `tless`, `lmo`, `hb`, `tudl`, `icbin`, `itodd`
+To train a refinement model on other BOP datasets, replace `tudl` with one of the following: `tless`, `lmo`, `hb`, `ycbv`, `icbin`, `itodd`
 
 
 ## Testing
