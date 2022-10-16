@@ -74,4 +74,12 @@ The difference between this repo and gdrn conference version mainly including:
 `./core/gdrn_modeling/test_gdrn.sh <config_path> <gpu_ids> <ckpt_path> (other args)`
 
 ## Pose Refinement
-TODO: rudy
+We utilize depth information to further refine the estimated pose.
+We provide two types of refinement: fast refinement and iterative refinement.
+
+For fast refinement, we compare the rendered object depth and the observed depth to refine translation.
+Run
+
+`./core/gdrn_modeling/test_gdrn_depth_refine.sh <config_path> <gpu_ids> <ckpt_path> (other args)`
+
+For iterative refinement, please checkout to the pose_refine branch for details.
