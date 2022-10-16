@@ -81,7 +81,7 @@ Run
 
 `./core/gdrn_modeling/test_gdrn_depth_refine.sh <config_path> <gpu_ids> <ckpt_path> (other args)`
 
-For iterative refinement, please checkout to the pose_refine branch for details.
+For iterative refinement, please checkout to the [pose_refine branch](https://github.com/shanice-l/gdrnpp_bop2022/tree/pose_refine) for details.
 
 ## Citing GDRNPP
 
