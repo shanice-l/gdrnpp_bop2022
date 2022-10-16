@@ -25,6 +25,8 @@ Link the datasets in the following folders with symlink.
         ├── ycbv
 ```
 
+The pretrained models are available on [onedrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/EgT-saAOPtROonp9o_nmPDQBeIO2x7RjvhMSXhMMTMgrlg?e=L2bX2f) (password: groupji).
+
 ## Training
 We train a model separately for each of the BOP datasets. To train the TUDL refinement model, run
 ```
@@ -35,11 +37,13 @@ To train a refinement model on other BOP datasets, replace `ycbv` with one of th
 
 ## Testing
 1. Generate GDRN results with save_gdrn.sh and put the trained RAFT models in folder "model_weights".
+
 2. Run
 ```
 ./test_fast.sh <DATASET> <RESULT_PATH> <GPU_ID>
 ```
 Use "test_fast_pbr.sh" for PBR results of YCB-V, T-LESS and TUD-L.
+
 3. Run
 ```
 python -m additional_scripts.convert_result --tar_dir <TAR_DIR> --dataset <DATASET>
