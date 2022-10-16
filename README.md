@@ -1,8 +1,6 @@
-## GDRNPP for BOP2022
+# GDRNPP for BOP2022
 
 This repo provides code and models for GDRNPP_BOP2022.
-
-TODO: add authors
 
 ## Path Setting
 
@@ -29,7 +27,7 @@ datasets/
 ```
 
 
-### MODELS
+### Models
 
 Download the trained models at [Onedrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/EgOQzGZn9A5DlaQhgpTtHBwB2Bwyx8qmvLauiHFcJbnGSw?e=EZ60La) (password: groupji) and put them in the folder `./output`.
 
@@ -59,7 +57,7 @@ Download the pretrained model at [Onedrive](https://mailstsinghuaeducn-my.sharep
 
 ## Pose Estimation
 
-The difference between this repo and gdrn conference version mainly including:
+The difference between this repo and GDR-Net (CVPR2021) mainly including:
 
 * Domain Randomization: We used stronger domain randomization operations than the conference version during training.
 * Network Architecture: We used a more powerful backbone Convnext rather than resnet-34,  and two  mask heads for predicting amodal mask and visible mask separately.
@@ -74,4 +72,17 @@ The difference between this repo and gdrn conference version mainly including:
 `./core/gdrn_modeling/test_gdrn.sh <config_path> <gpu_ids> <ckpt_path> (other args)`
 
 ## Pose Refinement
-TODO: rudy
+See [Pose Refinement](https://github.com/shanice-l/gdrnpp_bop2022/tree/pose_refine) for details.
+
+## Citing GDRNPP
+
+If you use GDRNPP in your research, please use the following BibTeX entry.
+
+```BibTeX
+@misc{liu2022gdrnpp_bop,
+  author =       {Xingyu Liu and Ruida Zhang and Chenyangguang Zhang and Bowen Fu and Jiwen Tang and Xiquan Liang and Jingyi Tang and Xiaotian Cheng and Yukang Zhang and Gu Wang and Xiangyang Ji},
+  title =        {GDRNPP},
+  howpublished = {\url{https://github.com/shanice-l/gdrnpp_bop2022}},
+  year =         {2022}
+}
+```
