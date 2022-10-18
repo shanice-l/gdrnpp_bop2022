@@ -16,13 +16,13 @@ The structure of `datasets` folder should look like below:
 ```
 datasets/
 ├── BOP_DATASETS   # https://bop.felk.cvut.cz/datasets/
-    ├──lm
+    ├──tudl
     ├──lmo
     ├──ycbv
     ├──icbin
     ├──hb
     ├──itodd
-    ├──tless
+    └──tless
 └──VOCdevkit
 ```
 
