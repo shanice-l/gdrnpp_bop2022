@@ -1,6 +1,6 @@
 # GDRNPP for BOP2022
 
-This repo provides code and models for GDRNPP_BOP2022.
+This repo provides code and models for GDRNPP_BOP2022, **winner (most of the awards) of the BOP Challenge 2022 at ECCV'22 [[slides](http://cmp.felk.cvut.cz/sixd/workshop_2022/slides/bop_challenge_2022_results.pdf)]**.
 
 ## Path Setting
 
@@ -85,14 +85,25 @@ For iterative refinement, please checkout to the [pose_refine branch](https://gi
 
 ## Citing GDRNPP
 
-If you use GDRNPP in your research, please use the following BibTeX entry.
+If you use GDRNPP in your research, please use the following BibTeX entries.
 
 ```BibTeX
 @misc{liu2022gdrnpp_bop,
-  author =       {Xingyu Liu and Ruida Zhang and Chenyangguang Zhang and Bowen Fu and Jiwen Tang and Xiquan Liang and Jingyi Tang and Xiaotian Cheng and Yukang Zhang and Gu Wang and Xiangyang Ji},
+  author =       {Xingyu Liu and Ruida Zhang and Chenyangguang Zhang and 
+                  Bowen Fu and Jiwen Tang and Xiquan Liang and Jingyi Tang and 
+                  Xiaotian Cheng and Yukang Zhang and Gu Wang and Xiangyang Ji},
   title =        {GDRNPP},
   howpublished = {\url{https://github.com/shanice-l/gdrnpp_bop2022}},
   year =         {2022}
+}
+
+@InProceedings{Wang_2021_GDRN,
+    title     = {{GDR-Net}: Geometry-Guided Direct Regression Network for Monocular 6D Object Pose Estimation},
+    author    = {Wang, Gu and Manhardt, Fabian and Tombari, Federico and Ji, Xiangyang},
+    booktitle = {IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2021},
+    pages     = {16611-16621}
 }
 ```
 
