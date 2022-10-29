@@ -47,7 +47,7 @@ We adopt yolox as the detection method. We used stronger data augmentation and r
 
 ### Training 
 
-Download the pretrained model at [Onedrive](https://mailstsinghuaeducn-my.sharepoint.com/personal/liuxy21_mails_tsinghua_edu_cn/_layouts/15/onedrive.aspx?ga=1&id=%2Fpersonal%2Fliuxy21%5Fmails%5Ftsinghua%5Fedu%5Fcn%2FDocuments%2Fbop%5Fchallenge%5F2022%2Fpretraied%5Fmodels%2Fyolox) (password: groupji) and put it in the folder `pretrained_models/yolox`. Then use the following command:
+Download the pretrained model at [Onedrive](https://mailstsinghuaeducn-my.sharepoint.com/:f:/g/personal/liuxy21_mails_tsinghua_edu_cn/EkCTrRfHUZVEtD7eHwLkYSkBCTXlh9ekDteSzK6jM4oo-A?e=6TCh8y) (password: groupji) and put it in the folder `pretrained_models/yolox`. Then use the following command:
 
 `./det/yolox/tools/train_yolox.sh <config_path> <gpu_ids> (other args)`
 
