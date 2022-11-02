@@ -1,6 +1,6 @@
 _base_ = ["../../../_base_/gdrn_base.py"]
 
-OUTPUT_DIR = "output/gdrn/tlessSO/convnext_a6_cPnP_AugCosyAAE_BG05_Dmask_amodalClipBox_modelCAD_tlessRealPbrSO/1"
+OUTPUT_DIR = "output/gdrn/tlessSO/convnext_AugCosyAAEGray_DMask_amodalClipBox_tless/1"
 INPUT = dict(
     DZI_PAD_SCALE=1.5,
     TRUNCATE_FG=True,
