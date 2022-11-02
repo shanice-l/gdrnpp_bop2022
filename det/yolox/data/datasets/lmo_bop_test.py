@@ -199,8 +199,7 @@ class LMO_BOP_TEST_Dataset(object):
 
                 inst = {
                     "category_id": cur_label,  # 0-based label
-                    "bbox": bbox_visib,
-                    "bbox_obj": bbox_obj,
+                    "bbox": bbox_obj,
                     "bbox_mode": BoxMode.XYWH_ABS,
                     "pose": pose,
                     "quat": quat,
