@@ -8,8 +8,8 @@ import detectron2.utils.comm as comm
 import ref
 from detectron2.data import DatasetCatalog, MetadataCatalog
 from core.gdrn_modeling.datasets import (
-    lm_dataset_d2,
     lm_pbr,
+    lmo_bop_test,
     ycbv_pbr,
     ycbv_d2,
     ycbv_bop_test,
@@ -39,8 +39,8 @@ __all__ = [
     "get_available_datasets",
 ]
 _DSET_MOD_NAMES = [
-    "lm_dataset_d2",
     "lm_pbr",
+    "lmo_bop_test",
     "ycbv_pbr",
     "ycbv_d2",
     "ycbv_bop_test",

@@ -3,8 +3,8 @@ import os.path as osp
 import mmcv
 from detectron2.data import DatasetCatalog
 from . import (
-    lm_dataset_d2,
     lm_pbr,
+    lmo_bop_test,
     ycbv_pbr,
     ycbv_d2,
     ycbv_bop_test,
@@ -34,8 +34,8 @@ __all__ = [
     "get_available_datasets",
 ]
 _DSET_MOD_NAMES = [
-    "lm_dataset_d2",
     "lm_pbr",
+    "lmo_bop_test",
     "ycbv_pbr",
     "ycbv_d2",
     "ycbv_bop_test",
