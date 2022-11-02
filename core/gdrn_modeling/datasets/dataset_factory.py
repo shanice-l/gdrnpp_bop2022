@@ -8,12 +8,8 @@ import detectron2.utils.comm as comm
 import ref
 from detectron2.data import DatasetCatalog, MetadataCatalog
 from core.gdrn_modeling.datasets import (
-    lm_syn_imgn,
     lm_dataset_d2,
-    lm_syn_egl,
     lm_pbr,
-    lm_blender,
-    lm_dataset_crop_d2,
     ycbv_pbr,
     ycbv_d2,
     ycbv_bop_test,
@@ -22,7 +18,6 @@ from core.gdrn_modeling.datasets import (
     hb_bop_test,
     hb_bench_driller_phone_d2,
     duck_frames,
-    lm_new_duck_pbr,
     tudl_pbr,
     tudl_d2,
     tudl_bop_test,

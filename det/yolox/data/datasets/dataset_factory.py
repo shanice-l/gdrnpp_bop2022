@@ -3,12 +3,7 @@ import os.path as osp
 import mmcv
 from detectron2.data import DatasetCatalog
 from . import (
-    lm_syn_imgn,
-    lm_dataset_d2,
-    # lm_syn_egl,
     lm_pbr,
-    lm_blender,
-    # lm_dataset_crop_d2,
     ycbv_pbr,
     ycbv_d2,
     ycbv_bop_test,
@@ -16,8 +11,6 @@ from . import (
     hb_bop_val,
     hb_bop_test,
     hb_bench_driller_phone_d2,
-    # duck_frames,
-    # lm_new_duck_pbr,
     tudl_train_real,
     tudl_pbr,
     tudl_bop_test,
