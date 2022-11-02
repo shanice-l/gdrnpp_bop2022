@@ -67,9 +67,17 @@ The difference between this repo and GDR-Net (CVPR2021) mainly including:
 
 `./core/gdrn_modeling/train_gdrn.sh <config_path> <gpu_ids> (other args)`
 
+For example:
+
+`./core/gdrn_modeling/train_gdrn.sh configs/gdrn/ycbv/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_ycbv.py 0`
+
 ### Testing 
 
 `./core/gdrn_modeling/test_gdrn.sh <config_path> <gpu_ids> <ckpt_path> (other args)`
+
+For example:
+
+`./core/gdrn_modeling/test_gdrn.sh configs/gdrn/ycbv/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_ycbv.py 0 output/gdrn/ycbv/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_ycbv/model_final_wo_optim.pth`
 
 ## Pose Refinement
 

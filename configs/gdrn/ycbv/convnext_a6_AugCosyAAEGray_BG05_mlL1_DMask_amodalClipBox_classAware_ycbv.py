@@ -1,7 +1,7 @@
 # about 3 days
 _base_ = ["../../_base_/gdrn_base.py"]
 
-OUTPUT_DIR = "output/gdrn/ycbv/convnext_a6_cPnP_AugCosyAAETrunc_BG05_Dmask_amodalClipBox_ycbv_real_pbr_visib30_10e"
+OUTPUT_DIR = "output/gdrn/ycbv/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_ycbv"
 INPUT = dict(
     DZI_PAD_SCALE=1.5,
     TRUNCATE_FG=True,
