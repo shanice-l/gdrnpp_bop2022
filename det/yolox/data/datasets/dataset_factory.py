@@ -17,9 +17,9 @@ from . import (
     tless_primesense_train,
     tless_pbr,
     tless_bop_test,
-    icbin_pbr,  # TODO:test
+    icbin_pbr,
     icbin_bop_test,
-    itodd_pbr,  # TODO:test
+    itodd_pbr,
     itodd_d2,
     itodd_bop_test,
 )  # noqa
