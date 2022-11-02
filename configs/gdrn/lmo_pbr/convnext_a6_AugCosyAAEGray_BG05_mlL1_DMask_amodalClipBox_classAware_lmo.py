@@ -45,7 +45,7 @@ SOLVER = dict(
 DATASETS = dict(
     TRAIN=("lmo_pbr_train",),
     TEST=("lmo_bop_test",),
-    DET_FILES_TEST=("datasets/BOP_DATASETS/lmo/test/test_bboxes/yolov4x_amodal_lmo_pbr_bop.json",),
+    DET_FILES_TEST=("datasets/BOP_DATASETS/lmo/test/test_bboxes/yolox_x_640_lmo_pbr_lmo_bop_test.json",),
 )
 
 DATALOADER = dict(
