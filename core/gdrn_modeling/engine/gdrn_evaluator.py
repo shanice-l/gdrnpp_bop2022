@@ -78,7 +78,7 @@ class GDRN_Evaluator(DatasetEvaluator):
                 model_paths=self.data_ref.model_paths,
                 scale_to_meter=0.001,
                 cache_dir=".cache",
-                texture_paths=self.data_ref.texture_paths if cfg.TEST.DEBUG else None,
+                texture_paths=self.data_ref.texture_paths,
                 center=False,
                 use_cache=True,
             )
