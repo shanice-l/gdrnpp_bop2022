@@ -518,8 +518,6 @@ class GDRN_Evaluator(DatasetEvaluator):
                 net_cfg = cfg.MODEL.POSE_NET
                 crop_res = net_cfg.OUTPUT_RES
 
-
-
                 for _ in range(cfg.TEST.DEPTH_REFINE_ITER):
                     self.ren.clear()
                     self.ren.set_cam(K_crop)
