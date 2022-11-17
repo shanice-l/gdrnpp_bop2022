@@ -3,7 +3,6 @@ core/csrc/uncertainty_pnp/ceres/
 .DS_Store
 # output dir
 /data
-/datasets
 *.so.*
 *.tar.gz
 *.egg-info*
