@@ -25,8 +25,8 @@ model.head.num_classes = 30
 train.init_checkpoint = "pretrained_models/yolox/yolox_x.pth"
 
 # datasets
-DATASETS.TRAIN = ["tracebot_pbr_train"]
-#DATASETS.TEST = ["tracebot_test"]
+DATASETS.TRAIN = ["tracebot_train_pbr"]
+DATASETS.TEST = ["tracebot_test"]
 
 dataloader.train.dataset.lst.names = DATASETS.TRAIN
 dataloader.train.total_batch_size = 32

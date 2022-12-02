@@ -303,7 +303,7 @@ tracebot_model_root = "BOP_DATASETS/tracebot/models/"
 
 SPLITS_TRACEBOT_PBR = dict(
     tracebot_train_pbr=dict(
-        name="tracebot_train_pbr",
+        name="tracebot_pbr_train",
         objs=ref.tracebot.objects,  # selected objects
         dataset_root=osp.join(DATASETS_ROOT, "BOP_DATASETS/tracebot/train_pbr"),
         models_root=osp.join(DATASETS_ROOT, "BOP_DATASETS/tracebot/models"),
@@ -367,7 +367,7 @@ def register_with_name_cfg(name, data_cfg=None):
     DatasetCatalog.register(name, TRACEBOT_PBR_Dataset(used_cfg))
     # something like eval_types
     MetadataCatalog.get(name).set(
-        id="tracebot",  # NOTE: for pvnet to determine module
+        id="tracebot_pbr",  # NOTE: for pvnet to determine module
         ref_key=used_cfg["ref_key"],
         objs=used_cfg["objs"],
         eval_error_types=["ad", "rete", "proj"],

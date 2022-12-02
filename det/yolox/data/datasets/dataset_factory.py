@@ -22,6 +22,7 @@ from . import (
     itodd_pbr,
     itodd_d2,
     itodd_bop_test,
+    tracebot_pbr,
 )  # noqa
 
 cur_dir = osp.dirname(osp.abspath(__file__))
@@ -53,6 +54,7 @@ _DSET_MOD_NAMES = [
     "itodd_pbr",
     "itodd_d2",
     "itodd_bop_test",
+    "tracebot_pbr"
 ]
 
 logger = logging.getLogger(__name__)
