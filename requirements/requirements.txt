@@ -33,8 +33,8 @@ fvcore
 tensorboardX
 einops
 pytorch3d
-# timm  # pytorch-image-models
-git+ssh://git@github.com/rwightman/pytorch-image-models.git  # the latest timm
+timm  # pytorch-image-models
+#git+ssh://git@github.com/rwightman/pytorch-image-models.git  # the latest timm
 glfw
 imageio
 imageio-ffmpeg
@@ -45,8 +45,7 @@ chardet
 thop  # https://github.com/Lyken17/pytorch-OpCounter
 loguru
 
-
-pytorch-lightning  # tested for 1.6.0.dev0
+pytorch-lightning=1.6.0  # tested for 1.6.0.dev0
 fairscale
 deepspeed
 

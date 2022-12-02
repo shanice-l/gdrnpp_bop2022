@@ -1,0 +1,38 @@
+FROM nvidia/cuda:11.6.0-cudnn8-devel-ubuntu20.04
+
+ENV DEBIAN_FRONTEND noninteractive
+
+RUN apt-get update && apt-get install -y \
+	python3-opencv ca-certificates python3-dev git wget sudo ninja-build
+RUN ln -sv /usr/bin/python3 /usr/bin/python
+
+RUN wget https://bootstrap.pypa.io/get-pip.py && \
+	python3 get-pip.py && \
+	rm get-pip.py
+
+RUN pip install tensorboard cmake onnx   # cmake from apt-get is too old
+RUN pip install torch==1.12.1+cu116 torchvision==0.13.1+cu116 torchaudio==0.12.1 --extra-index-url https://download.pytorch.org/whl/cu116
+RUN pip install 'git+https://github.com/facebookresearch/fvcore'
+
+ENV FORCE_CUDA="1"
+
+ARG TORCH_CUDA_ARCH_LIST="Kepler;Kepler+Tesla;Maxwell;Maxwell+Tegra;Pascal;Volta;Turing"
+ENV TORCH_CUDA_ARCH_LIST="${TORCH_CUDA_ARCH_LIST}"
+
+RUN pip install 'git+https://github.com/facebookresearch/detectron2'
+
+RUN git clone https://github.com/hoenigpeter/gdrnpp_bop2022.git /gdrnpp_bop2022
+
+RUN bash ./gdrnpp_bop2022/scripts/install_deps.sh
+
+RUN pip install -r ./gdrnpp_bop2022/requirements/requirements.txt
+
+RUN pip install mmcv
+RUN pip install loguru
+RUN pip install chardet
+RUN pip install glumpy
+
+RUN sh /gdrnpp_bop2022/scripts/compile_all.sh
+
+WORKDIR /gdrnpp_bop2022
+
