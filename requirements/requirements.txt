@@ -45,7 +45,7 @@ chardet
 thop  # https://github.com/Lyken17/pytorch-OpCounter
 loguru
 
-pytorch-lightning=1.6.0  # tested for 1.6.0.dev0
+pytorch-lightning==1.6.0  # tested for 1.6.0.dev0
 fairscale
 deepspeed
 
