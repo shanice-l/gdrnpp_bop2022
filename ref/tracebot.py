@@ -36,6 +36,7 @@ id2obj = {
     7: "LargeRinseFluidA_Bottle.stl",
     8: "tracebot_needle_with_cap.stl",
 }
+objects = list(id2obj.values())
 obj_num = len(id2obj)
 obj2id = {_name: _id for _id, _name in id2obj.items()}
 
