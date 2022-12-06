@@ -76,8 +76,9 @@ optimizer = L(Ranger)(
     # nesterov=True,
 )
 
-train.total_epochs = 30
-train.no_aug_epochs = 15
+train.total_epochs = 2
+#train.no_aug_epochs = 15
+train.no_aug_epochs = 1
 train.checkpointer = dict(period=2, max_to_keep=10)
 
 test.test_dataset_names = DATASETS.TEST

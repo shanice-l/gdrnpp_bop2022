@@ -127,7 +127,7 @@ class TRACEBOT_BOP_TEST_Dataset:
             for scene_id, im_id in tqdm(scene_im_ids):
                 str_im_id = str(im_id)
                 scene_root = osp.join(self.dataset_root, f"{scene_id:06d}")
-                rgb_path = osp.join(scene_root, "rgb/{:06d}.png").format(im_id)
+                rgb_path = osp.join(scene_root, "rgb/{:06d}.jpg").format(im_id)
                 assert osp.exists(rgb_path), rgb_path
 
                 depth_path = osp.join(scene_root, "depth/{:06d}.png".format(im_id))
