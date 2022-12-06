@@ -1,7 +1,12 @@
+"""Register datasets in this file will be imported in project root to register
+the datasets."""
 import logging
+import os
 import os.path as osp
 import mmcv
-from detectron2.data import DatasetCatalog
+import detectron2.utils.comm as comm
+import ref
+from detectron2.data import DatasetCatalog, MetadataCatalog
 from core.gdrn_modeling.datasets import (
     lm_pbr,
     lmo_bop_test,
@@ -12,21 +17,21 @@ from core.gdrn_modeling.datasets import (
     hb_bop_val,
     hb_bop_test,
     tudl_pbr,
+    tudl_d2,
     tudl_bop_test,
     tless_pbr,
+    tless_d2,
     tless_bop_test,
     icbin_pbr,
     icbin_bop_test,
     itodd_pbr,
-    itodd_d2,
     itodd_bop_test,
-    tracebot_pbr,
-    tracebot_bop_test,
-)  # noqa
+    itodd_d2,
+)
+
 
 cur_dir = osp.dirname(osp.abspath(__file__))
 # from lib.utils.utils import iprint
-
 __all__ = [
     "register_dataset",
     "register_datasets",
@@ -43,16 +48,16 @@ _DSET_MOD_NAMES = [
     "hb_bop_val",
     "hb_bop_test",
     "tudl_pbr",
+    "tudl_d2",
     "tudl_bop_test",
     "tless_pbr",
+    "tless_d2",
     "tless_bop_test",
     "icbin_pbr",
     "icbin_bop_test",
     "itodd_pbr",
-    "itodd_d2",
     "itodd_bop_test",
-    "tracebot_pbr",
-    "tracebot_bop_test",
+    "itodd_d2",
 ]
 
 logger = logging.getLogger(__name__)

@@ -1,7 +1,7 @@
 # about 3 days
 _base_ = ["../../_base_/gdrn_base.py"]
 
-OUTPUT_DIR = "output/gdrn/ycbv/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_tracebot"
+OUTPUT_DIR = "output/gdrn/tracebot/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_tracebot"
 INPUT = dict(
     DZI_PAD_SCALE=1.5,
     TRUNCATE_FG=True,
@@ -44,9 +44,9 @@ SOLVER = dict(
 )
 
 DATASETS = dict(
-    TRAIN=("tracebot_train_pbr", "ycbv_train_pbr"),
-    TEST=("ycbv_test",),
-    DET_FILES_TEST=("datasets/BOP_DATASETS/tracebot/test/test_bboxes/yolox_x_640_tracebot_bop_test.json",),
+    TRAIN = ["tracebot_train_pbr"],
+    TEST = ["tracebot_bop_test"],
+    DET_FILES_TEST=("datasets/BOP_DATASETS/tracebot/test/test_bboxes/yolox_x_640_tracebot_test.json",),
     SYM_OBJS=[],  # used for custom evalutor
 )
 
@@ -126,7 +126,7 @@ MODEL = dict(
 )
 
 VAL = dict(
-    DATASET_NAME="ycbv",
+    DATASET_NAME="tracebot",
     SPLIT_TYPE="",
     SCRIPT_PATH="lib/pysixd/scripts/eval_pose_results_more.py",
     TARGETS_FILENAME="test_targets_bop19.json",
