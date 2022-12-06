@@ -29,7 +29,7 @@ DATASETS.TRAIN = ["tracebot_train_pbr"]
 DATASETS.TEST = ["tracebot_train_pbr"]
 
 dataloader.train.dataset.lst.names = DATASETS.TRAIN
-dataloader.train.total_batch_size = 32
+dataloader.train.total_batch_size = 16
 
 # color aug
 dataloader.train.aug_wrapper.COLOR_AUG_PROB = 0.8
