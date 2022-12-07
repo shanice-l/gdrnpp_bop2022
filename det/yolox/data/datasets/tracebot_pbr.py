@@ -66,7 +66,7 @@ class TRACEBOT_PBR_Dataset:
         self.obj2label = OrderedDict((obj, obj_id) for obj_id, obj in enumerate(self.objs))
         ##########################################################
 
-        self.scenes = [f"{i:06d}" for i in range(21)]
+        self.scenes = [f"{i:06d}" for i in range(31)] + [f"{i:06d}" for i in range(32,49)]
 
     def __call__(self):
         """Load light-weight instance annotations of all images into a list of
@@ -102,7 +102,7 @@ class TRACEBOT_PBR_Dataset:
         logger.info("loading dataset dicts: {}".format(self.name))
         self.num_instances_without_valid_segmentation = 0
         self.num_instances_without_valid_box = 0
-        dataset_dicts = []  # ######################################################
+
         # it is slow because of loading and converting masks to rle
         for scene in tqdm(self.scenes):
             scene_id = int(scene)
@@ -302,7 +302,7 @@ tracebot_model_root = "BOP_DATASETS/tracebot/models/"
 
 
 SPLITS_TRACEBOT_PBR = dict(
-    tracebot_train_pbr=dict(
+    tracebot_pbr_train=dict(
         name="tracebot_pbr_train",
         objs=ref.tracebot.objects,  # selected objects
         dataset_root=osp.join(DATASETS_ROOT, "BOP_DATASETS/tracebot/train_pbr"),

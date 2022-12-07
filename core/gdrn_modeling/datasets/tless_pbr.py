@@ -148,16 +148,14 @@ class TLESS_PBR_Dataset:
 
                     bbox_visib = gt_info_dict[str_im_id][anno_i]["bbox_visib"]
                     bbox_obj = gt_info_dict[str_im_id][anno_i]["bbox_obj"]
+
                     x1, y1, w, h = bbox_visib
                     if self.filter_invalid:
                         if h <= 1 or w <= 1:
                             self.num_instances_without_valid_box += 1
                             continue
 
-                    mask_file = osp.join(
-                        scene_root,
-                        "mask/{:06d}_{:06d}.png".format(int_im_id, anno_i),
-                    )
+                    mask_file = osp.join(scene_root, "mask/{:06d}_{:06d}.png".format(int_im_id, anno_i))
                     mask_visib_file = osp.join(
                         scene_root,
                         "mask_visib/{:06d}_{:06d}.png".format(int_im_id, anno_i),

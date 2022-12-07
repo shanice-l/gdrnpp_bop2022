@@ -7,6 +7,7 @@ INPUT = dict(
     TRUNCATE_FG=True,
     CHANGE_BG_PROB=0.5,
     COLOR_AUG_PROB=0.8,
+    IMG_AUG_RESIZE=False,
     COLOR_AUG_TYPE="code",
     COLOR_AUG_CODE=(
         "Sequential(["
@@ -47,7 +48,7 @@ DATASETS = dict(
     TRAIN = ["tracebot_train_pbr"],
     TEST = ["tracebot_bop_test"],
     DET_FILES_TEST=("datasets/BOP_DATASETS/tracebot/test/test_bboxes/yolox_x_640_tracebot_test.json",),
-    SYM_OBJS=[],  # used for custom evalutor
+    DET_TOPK_PER_OBJ=100,
 )
 
 DATALOADER = dict(
@@ -64,7 +65,7 @@ MODEL = dict(
     POSE_NET=dict(
         NAME="GDRN_double_mask",
         XYZ_ONLINE=True,
-        NUM_CLASSES=21,
+        NUM_CLASSES=8,
         BACKBONE=dict(
             FREEZE=False,
             PRETRAINED="timm",
@@ -127,10 +128,18 @@ MODEL = dict(
 
 VAL = dict(
     DATASET_NAME="tracebot",
-    SPLIT_TYPE="",
     SCRIPT_PATH="lib/pysixd/scripts/eval_pose_results_more.py",
     TARGETS_FILENAME="test_targets_bop19.json",
     ERROR_TYPES="vsd,mspd,mssd",
+    #RENDERER_TYPE="cpp",  # cpp, python, egl
+    RENDERER_TYPE="python",  # cpp, python, egl
+    SPLIT="test",
+    SPLIT_TYPE="",
+    N_TOP=-1,  # SISO: 1, VIVO: -1 (for LINEMOD, 1/-1 are the same)
+    EVAL_CACHED=False,  # if the predicted poses have been saved
+    SCORE_ONLY=False,  # if the errors have been calculated
+    EVAL_PRINT_ONLY=False,  # if the scores/recalls have been saved
+    EVAL_PRECISION=False,  # use precision or recall
     USE_BOP=True,  # whether to use bop toolkit
 )
 

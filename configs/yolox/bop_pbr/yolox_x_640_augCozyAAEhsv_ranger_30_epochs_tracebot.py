@@ -25,7 +25,7 @@ model.head.num_classes = 8
 train.init_checkpoint = "pretrained_models/yolox/yolox_x.pth"
 
 # datasets
-DATASETS.TRAIN = ["tracebot_train_pbr"]
+DATASETS.TRAIN = ["tracebot_pbr_train"]
 DATASETS.TEST = ["tracebot_bop_test"]
 
 dataloader.train.dataset.lst.names = DATASETS.TRAIN
@@ -76,9 +76,8 @@ optimizer = L(Ranger)(
     # nesterov=True,
 )
 
-train.total_epochs = 2
-#train.no_aug_epochs = 15
-train.no_aug_epochs = 1
+train.total_epochs = 30
+train.no_aug_epochs = 15
 train.checkpointer = dict(period=2, max_to_keep=10)
 
 test.test_dataset_names = DATASETS.TEST

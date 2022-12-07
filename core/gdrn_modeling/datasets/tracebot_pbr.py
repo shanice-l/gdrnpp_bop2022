@@ -66,7 +66,7 @@ class TRACEBOT_PBR_Dataset:
         self.obj2label = OrderedDict((obj, obj_id) for obj_id, obj in enumerate(self.objs))
         ##########################################################
 
-        self.scenes = [f"{i:06d}" for i in range(21)]
+        self.scenes = [f"{i:06d}" for i in range(31)] + [f"{i:06d}" for i in range(32,49)]
 
     def __call__(self):
         """Load light-weight instance annotations of all images into a list of
@@ -190,7 +190,8 @@ class TRACEBOT_PBR_Dataset:
                     # assert osp.exists(xyz_path), xyz_path
                     inst = {
                         "category_id": cur_label,  # 0-based label
-                        "bbox": bbox_obj,  # TODO: load both bbox_obj and bbox_visib
+                        "bbox": bbox_visib,
+                        "bbox_obj": bbox_obj,
                         "bbox_mode": BoxMode.XYWH_ABS,
                         "pose": pose,
                         "quat": quat,
@@ -303,7 +304,7 @@ tracebot_model_root = "BOP_DATASETS/tracebot/models/"
 
 SPLITS_TRACEBOT_PBR = dict(
     tracebot_train_pbr=dict(
-        name="tracebot_pbr_train",
+        name="tracebot_train_pbr",
         objs=ref.tracebot.objects,  # selected objects
         dataset_root=osp.join(DATASETS_ROOT, "BOP_DATASETS/tracebot/train_pbr"),
         models_root=osp.join(DATASETS_ROOT, "BOP_DATASETS/tracebot/models"),
@@ -425,22 +426,22 @@ def test_vis():
                 labels=labels[_i : _i + 1],
             )
             img_vis_kpts2d = misc.draw_projected_box3d(img_vis.copy(), kpts_2d[_i])
-            xyz_path = annos[_i]["xyz_path"]
-            xyz_info = mmcv.load(xyz_path)
-            x1, y1, x2, y2 = xyz_info["xyxy"]
-            xyz_crop = xyz_info["xyz_crop"].astype(np.float32)
-            xyz = np.zeros((imH, imW, 3), dtype=np.float32)
-            xyz[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
-            xyz_show = get_emb_show(xyz)
-            xyz_crop_show = get_emb_show(xyz_crop)
-            img_xyz = img.copy() / 255.0
-            mask_xyz = ((xyz[:, :, 0] != 0) | (xyz[:, :, 1] != 0) | (xyz[:, :, 2] != 0)).astype("uint8")
-            fg_idx = np.where(mask_xyz != 0)
-            img_xyz[fg_idx[0], fg_idx[1], :] = xyz_show[fg_idx[0], fg_idx[1], :3]
-            img_xyz_crop = img_xyz[y1 : y2 + 1, x1 : x2 + 1, :]
-            img_vis_crop = img_vis[y1 : y2 + 1, x1 : x2 + 1, :]
+            #xyz_path = annos[_i]["xyz_path"]
+            #xyz_info = mmcv.load(xyz_path)
+            #x1, y1, x2, y2 = xyz_info["xyxy"]
+            #xyz_crop = xyz_info["xyz_crop"].astype(np.float32)
+            #xyz = np.zeros((imH, imW, 3), dtype=np.float32)
+            #xyz[y1 : y2 + 1, x1 : x2 + 1, :] = xyz_crop
+            #xyz_show = get_emb_show(xyz)
+            #xyz_crop_show = get_emb_show(xyz_crop)
+            #img_xyz = img.copy() / 255.0
+            #mask_xyz = ((xyz[:, :, 0] != 0) | (xyz[:, :, 1] != 0) | (xyz[:, :, 2] != 0)).astype("uint8")
+            #fg_idx = np.where(mask_xyz != 0)
+            #img_xyz[fg_idx[0], fg_idx[1], :] = xyz_show[fg_idx[0], fg_idx[1], :3]
+            #img_xyz_crop = img_xyz[y1 : y2 + 1, x1 : x2 + 1, :]
+            #img_vis_crop = img_vis[y1 : y2 + 1, x1 : x2 + 1, :]
             # diff mask
-            diff_mask_xyz = np.abs(masks[_i] - mask_xyz)[y1 : y2 + 1, x1 : x2 + 1]
+            #diff_mask_xyz = np.abs(masks[_i] - mask_xyz)[y1 : y2 + 1, x1 : x2 + 1]
 
             grid_show(
                 [
@@ -449,25 +450,25 @@ def test_vis():
                     img_vis_kpts2d[:, :, [2, 1, 0]],
                     depth,
                     # xyz_show,
-                    diff_mask_xyz,
-                    xyz_crop_show,
-                    img_xyz[:, :, [2, 1, 0]],
-                    img_xyz_crop[:, :, [2, 1, 0]],
-                    img_vis_crop,
+                    #diff_mask_xyz,
+                    #xyz_crop_show,
+                    #img_xyz[:, :, [2, 1, 0]],
+                    #img_xyz_crop[:, :, [2, 1, 0]],
+                    #img_vis_crop,
                 ],
                 [
                     "img",
                     "vis_img",
                     "img_vis_kpts2d",
                     "depth",
-                    "diff_mask_xyz",
-                    "xyz_crop_show",
-                    "img_xyz",
-                    "img_xyz_crop",
-                    "img_vis_crop",
+                    #"diff_mask_xyz",
+                    #"xyz_crop_show",
+                    #"img_xyz",
+                    #"img_xyz_crop",
+                    #"img_vis_crop",
                 ],
-                row=3,
-                col=3,
+                row=2,
+                col=2,
             )
 
 
@@ -475,7 +476,7 @@ if __name__ == "__main__":
     """Test the  dataset loader.
 
     Usage:
-        python -m this_module tracebot_pbr_train
+        python -m this_module tracebot_train_pbr
     """
     from lib.vis_utils.image import grid_show
     from lib.utils.setup_logger import setup_my_logger

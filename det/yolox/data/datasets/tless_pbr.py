@@ -85,10 +85,7 @@ class TLESS_PBR_Dataset:
                 )
             ).encode("utf-8")
         ).hexdigest()
-        cache_path = osp.join(
-            self.cache_dir,
-            "dataset_dicts_{}_{}.pkl".format(self.name, hashed_file_name),
-        )
+        cache_path = osp.join(self.cache_dir, "dataset_dicts_{}_{}.pkl".format(self.name, hashed_file_name))
 
         if osp.exists(cache_path) and self.use_cache:
             logger.info("load cached dataset dicts from {}".format(cache_path))
@@ -151,6 +148,7 @@ class TLESS_PBR_Dataset:
 
                     bbox_visib = gt_info_dict[str_im_id][anno_i]["bbox_visib"]
                     bbox_obj = gt_info_dict[str_im_id][anno_i]["bbox_obj"]
+
                     x1, y1, w, h = bbox_visib
                     if self.filter_invalid:
                         if h <= 1 or w <= 1:
@@ -192,6 +190,7 @@ class TLESS_PBR_Dataset:
                         "visib_fract": visib_fract,
                         "xyz_path": xyz_path,
                     }
+                    
                     model_info = self.models_info[str(obj_id)]
                     inst["model_info"] = model_info
                     for key in ["bbox3d_and_center"]:
