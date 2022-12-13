@@ -152,6 +152,7 @@ def get_data_ref(dataset_name):
         "hb": "hb",
         "hbs": "hb_bop19",
         "itodd": "itodd",
+        "tracebot": "tracebot"
     }
     ref_key = ref_key_dict[dataset_name]
     return ref.__dict__[ref_key]
@@ -361,6 +362,7 @@ def load_and_print_val_scores_tab(
         "tyol": 15,
         "ycbv": 15,
         "ycbvposecnn": 15,
+        "tracebot": 15,
     }
     ntop = cfg.VAL.N_TOP
     val_dataset_name = cfg.VAL.DATASET_NAME
@@ -374,6 +376,23 @@ def load_and_print_val_scores_tab(
 
     vsd_taus = list(np.arange(0.05, 0.51, 0.05))
     # visib_gt_min = 0.1
+
+    print("ntop: ", ntop)
+    print()
+    print("val_dataset_name: ", val_dataset_name)
+    print()
+    print("vsd_delta: ", vsd_delta)
+    print()
+    print("data_ref: ", data_ref)
+    print() 
+    print("obj_nums_dict: ", obj_nums_dict)
+    print()
+    print("data_ref.dataset_root: ", data_ref.dataset_root)
+    print()
+    print("cfg.VAL.TARGETS_FILENAME", cfg.VAL.TARGETS_FILENAME) 
+
+    if val_dataset_name == "tracebot":
+           obj_nums_dict.update({'8': 0})
 
     for result_name in tqdm(result_names):
         logger.info("=====================================================================")

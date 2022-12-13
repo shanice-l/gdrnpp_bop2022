@@ -103,6 +103,8 @@ class TRACEBOT_PBR_Dataset:
         self.num_instances_without_valid_segmentation = 0
         self.num_instances_without_valid_box = 0
 
+        dataset_dicts = []  # ######################################################
+        
         # it is slow because of loading and converting masks to rle
         for scene in tqdm(self.scenes):
             scene_id = int(scene)
