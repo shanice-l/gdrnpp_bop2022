@@ -3,7 +3,6 @@ import os
 import os.path as osp
 
 import cv2
-import fastfunc
 import mmcv
 import numpy as np
 import pyassimp
@@ -28,6 +27,12 @@ support model_loadfn to load objects
 * pysixd: the bop toolkit implementation
 * plydata: the original implementation
 """
+
+
+def _fast_add_at(target, idx, vals):
+    # https://github.com/ml31415/numpy-groupies/issues/24
+    # https://github.com/numpy/numpy/issues/5922
+    return target + np.bincount(idx, weights=vals, minlength=target.shape[0])
 
 
 class Model3D:
@@ -333,11 +338,11 @@ class Model3D:
         num_neighbors = np.zeros(len(mesh.node_coords), dtype=int)
 
         idx = mesh.edges["nodes"]
-        fastfunc.add.at(num_neighbors, idx, np.ones(idx.shape, dtype=int))
+        num_neighbors = _fast_add_at(num_neighbors, idx, np.ones(idx.shape, dtype=int))
 
         new_points = np.zeros(mesh.node_coords.shape)
-        fastfunc.add.at(new_points, idx[:, 0], mesh.node_coords[idx[:, 1]])
-        fastfunc.add.at(new_points, idx[:, 1], mesh.node_coords[idx[:, 0]])
+        new_points = _fast_add_at(new_points, idx[:, 0], mesh.node_coords[idx[:, 1]])
+        new_points = _fast_add_at(new_points, idx[:, 1], mesh.node_coords[idx[:, 0]])
 
         new_points /= num_neighbors[:, None]
         idx = mesh.is_boundary_node
