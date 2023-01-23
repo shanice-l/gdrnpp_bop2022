@@ -247,7 +247,6 @@ class YCBV_Dataset:
                         xyz_root,
                         f"{scene_id:06d}/{im_id:06d}_{anno_i:06d}-xyz.pkl",
                     )
-                    # assert osp.exists(xyz_path), xyz_path
                     inst["xyz_path"] = xyz_path
 
                 model_info = self.models_info[str(obj_id)]
