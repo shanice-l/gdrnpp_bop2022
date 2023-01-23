@@ -402,8 +402,7 @@ def get_split_params(datasets_path, dataset_name, split, split_type=None):
     # TRACEBOT.
     elif dataset_name == 'tracebot':
         #p['scene_ids'] = list(range(22,68))
-        #p['scene_ids'] = {'train': list(range(31))+list(range(32,49)), 'test': list(range(49,68))}[split]
-        p['scene_ids'] = {'train': list(range(31))+list(range(32,49)), 'test': [49]}[split]
+        p['scene_ids'] = {'train': list(range(31))+list(range(32,49)), 'test': list(range(49,68))}[split]
         p['im_size'] = (1280, 720)
 
     elif dataset_name == 'tracebot_real':
