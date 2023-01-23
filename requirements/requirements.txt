@@ -33,8 +33,7 @@ fvcore
 tensorboardX
 einops
 pytorch3d
-timm  # pytorch-image-models
-#git+ssh://git@github.com/rwightman/pytorch-image-models.git  # the latest timm
+timm==0.6.7
 glfw
 imageio
 imageio-ffmpeg
