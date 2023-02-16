@@ -1,4 +1,9 @@
 import os
+import os.path as osp
+import sys
+cur_dir = osp.dirname(osp.abspath(__file__))
+PROJ_ROOT = osp.normpath(osp.join(cur_dir, "../../.."))
+sys.path.insert(0, PROJ_ROOT)
 
 import torch
 import numpy as np
@@ -38,13 +43,12 @@ from core.gdrn_modeling.models import (
 
 class GdrnPredictor():
     def __init__(self,
-                 config_file_path="../../../configs/gdrn/lmo_pbr/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_lmo.py",
-                 ckpt_file_path="../../../output/gdrn/lmo_pbr/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_lmo/model_final.pth",
-                 camera_json_path="../../../datasets/BOP_DATASETS/lmo/camera.json",
-                 path_to_obj_models="../../../datasets/BOP_DATASETS/lmo/models"
+                 config_file_path=osp.join(PROJ_ROOT,"configs/gdrn/lmo_pbr/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_lmo.py"),
+                 ckpt_file_path=osp.join(PROJ_ROOT,"output/gdrn/lmo_pbr/convnext_a6_AugCosyAAEGray_BG05_mlL1_DMask_amodalClipBox_classAware_lmo/model_final.pth"),
+                 camera_json_path=osp.join(PROJ_ROOT,"datasets/BOP_DATASETS/lmo/camera.json"),
+                 path_to_obj_models=osp.join(PROJ_ROOT,"datasets/BOP_DATASETS/lmo/models")
                  ):
 
-        #set your own parameters
         self.args = SimpleNamespace(config_file=config_file_path,
                                     opts={'TEST.SAVE_RESULT_ONLY': True,
                                           'MODEL.WEIGHTS': ckpt_file_path},

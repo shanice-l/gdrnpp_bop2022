@@ -1,4 +1,10 @@
 # the core predictor classes for gdrn
+import os.path as osp
+import sys
+cur_dir = osp.dirname(osp.abspath(__file__))
+PROJ_ROOT = osp.normpath(osp.join(cur_dir, "../../.."))
+sys.path.insert(0, PROJ_ROOT)
+
 import torch
 import cv2
 from torch import nn
@@ -23,8 +29,8 @@ from loguru import logger
 class YoloPredictor():
 
     def __init__(self, exp_name="yolox-x",
-                       config_file_path="../../../configs/yolox/bop_pbr/yolox_x_640_augCozyAAEhsv_ranger_30_epochs_lmo_pbr_lmo_bop_test.py",
-                       ckpt_file_path="../../../output/yolox/bop_pbr/yolox_x_640_augCozyAAEhsv_ranger_30_epochs_lmo_pbr_lmo_bop_test/model_final.pth",
+                       config_file_path=osp.join(PROJ_ROOT,"configs/yolox/bop_pbr/yolox_x_640_augCozyAAEhsv_ranger_30_epochs_lmo_pbr_lmo_bop_test.py"),
+                       ckpt_file_path=osp.join(PROJ_ROOT,"output/yolox/bop_pbr/yolox_x_640_augCozyAAEhsv_ranger_30_epochs_lmo_pbr_lmo_bop_test/model_final.pth"),
                        fuse=True,
                        fp16=False):
         self.exp = get_exp(None, exp_name)
@@ -165,16 +171,14 @@ class YoloPredictor():
         return outputs
 
 if __name__ == "__main__":
-    #little test example to visualize yolo model output
-
     predictor = YoloPredictor(
                        exp_name="yolox-x",
-                       config_file_path="../../../configs/yolox/bop_pbr/yolox_x_640_augCozyAAEhsv_ranger_30_epochs_lmo_pbr_lmo_bop_test.py",
-                       ckpt_file_path="../../../output/yolox/bop_pbr/yolox_x_640_augCozyAAEhsv_ranger_30_epochs_lmo_pbr_lmo_bop_test/model_final.pth",
+                       config_file_path=osp.join(PROJ_ROOT,"configs/yolox/bop_pbr/yolox_x_640_augCozyAAEhsv_ranger_30_epochs_lmo_pbr_lmo_bop_test.py"),
+                       ckpt_file_path=osp.join(PROJ_ROOT,"output/yolox/bop_pbr/yolox_x_640_augCozyAAEhsv_ranger_30_epochs_lmo_pbr_lmo_bop_test/model_final.pth"),
                        fuse=True,
                        fp16=False
                        )
-    img_path = "../../../datasets/BOP_DATASETS/lmo/test/000001/rgb/000000.jpg"
+    img_path = osp.join(PROJ_ROOT,"datasets/BOP_DATASETS/lmo/test/000001/rgb/000000.jpg")
     img = cv2.imread(img_path)
     result = predictor.inference(img)
     predictor.visual_yolo(result[0], img, ["cls_name_1", "cls_name_2"])
