@@ -1,0 +1,22 @@
+version: '2.4'
+services:
+  gdrn:
+    image: gdrnpp_base
+    build:
+      context: .
+      dockerfile: dockerfile
+    network_mode: "host"
+    runtime: "nvidia"
+    volumes:
+      - "../../gdrnpp_bop2022:/gdrnpp_bop2022:rw"
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      - /etc/localtime:/etc/localtime:ro
+    environment:
+      - DISPLAY
+      - TERM
+      - QT_X11_NO_MITSHM=1
+      - NVIDIA_DRIVER_CAPABILITIES=all
+      - NVIDIA_VISIBLE_DEVICES=all
+    privileged: true
+    stdin_open: true
+    tty: true
