@@ -1,4 +1,3 @@
-# Dockerfile for GDRNPP
-Configure volume-paths in docker_run.sh before usage  
+# Dockerfile for GDRNPP  
 `xhost +`  
 `docker compose up`  
