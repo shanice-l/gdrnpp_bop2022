@@ -5,6 +5,7 @@ import operator
 import pickle
 import random
 import mmcv
+import mmengine
 import torch
 import torch.multiprocessing as mp
 import torch.utils.data as data
@@ -164,7 +165,7 @@ def load_detections_into_dataset(
     """
 
     logger.info("Loading detections for {} from: {}".format(dataset_name, det_file))
-    detections = mmcv.load(det_file)
+    detections = mmengine.fileio.load(det_file)
 
     meta = MetadataCatalog.get(dataset_name)
     objs = meta.objs
@@ -260,7 +261,7 @@ def load_init_poses_into_dataset(
     """
 
     logger.info("Loading initial poses for {} from: {}".format(dataset_name, init_pose_file))
-    init_det_poses = mmcv.load(init_pose_file)
+    init_det_poses = mmengine.fileio.load(init_pose_file)
 
     meta = MetadataCatalog.get(dataset_name)
     objs = meta.objs
@@ -351,7 +352,7 @@ def load_catre_init_into_dataset(
     """
 
     logger.info("Loading initial poses for {} from: {}".format(dataset_name, init_pose_file))
-    init_det_poses = mmcv.load(init_pose_file)
+    init_det_poses = mmengine.fileio.load(init_pose_file)
 
     meta = MetadataCatalog.get(dataset_name)
     objs = meta.objs

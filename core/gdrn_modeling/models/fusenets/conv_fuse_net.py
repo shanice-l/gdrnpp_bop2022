@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from torch.nn.modules.batchnorm import _BatchNorm
-from mmcv.cnn import normal_init, constant_init
+from mmengine.model import normal_init, constant_init
 
 
 class ConvFuseNet(nn.Module):

@@ -6,6 +6,7 @@ import subprocess
 import time
 
 import mmcv
+import mmengine
 import numpy as np
 from tqdm import tqdm
 from tabulate import tabulate
@@ -33,7 +34,7 @@ def to_list(array):
 def save_and_eval_results(cfg, results_all, output_dir, obj_ids=None):
     save_root = output_dir  # eval_path
     split_type_str = f"-{cfg.VAL.SPLIT_TYPE}" if cfg.VAL.SPLIT_TYPE != "" else ""
-    mmcv.mkdir_or_exist(save_root)
+    mmengine.utils.path.mkdir_or_exist(save_root)
     header = "scene_id,im_id,obj_id,score,R,t,time"
     keys = header.split(",")
     result_names = []
@@ -205,7 +206,7 @@ def get_object_nums_from_targets(targets_path):
     """stat the number of each object given a targets json file in BOP
     format."""
     assert osp.exists(targets_path), targets_path
-    targets = mmcv.load(targets_path)
+    targets = mmengine.fileio.load(targets_path)
 
     obj_nums_dict = {}
     for target in targets:

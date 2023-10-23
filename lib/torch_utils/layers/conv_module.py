@@ -5,8 +5,8 @@ import warnings
 
 import torch.nn as nn
 
-from mmcv.cnn.utils import constant_init, kaiming_init
-from mmcv.cnn.bricks.conv import CONV_LAYERS
+from mmengine.model import constant_init, kaiming_init
+from mmcv.cnn.bricks.conv import MODELS
 from mmcv.cnn.bricks.conv import build_conv_layer as build_conv_layer_mmcv
 from mmcv.cnn.bricks.padding import build_padding_layer
 from timm.models.layers import StdConv2d
@@ -40,14 +40,14 @@ def build_conv_layer(cfg, *args, **kwargs):
 
     layer_type = cfg_.pop("type")
     if layer_type == "StdConv2d":
-        CONV_LAYERS.register_module()(StdConv2d)
+        MODELS.register_module()(StdConv2d)
     elif layer_type == "MeanConv2d":
-        CONV_LAYERS.register_module()(MeanConv2d)
+        MODELS.register_module()(MeanConv2d)
 
-    if layer_type not in CONV_LAYERS:
+    if layer_type not in MODELS:
         raise KeyError(f"Unrecognized norm type {layer_type}")
     else:
-        conv_layer = CONV_LAYERS.get(layer_type)
+        conv_layer = MODELS.get(layer_type)
 
     layer = conv_layer(*args, **kwargs, **cfg_)
 

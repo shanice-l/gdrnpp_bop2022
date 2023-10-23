@@ -7,11 +7,13 @@ from mmcv.cnn import (
     build_conv_layer,
     build_norm_layer,
     build_plugin_layer,
+)
+from mmengine.model import (
     constant_init,
     kaiming_init,
 )
-from mmcv.runner import load_checkpoint
-from mmcv.utils.parrots_wrapper import _BatchNorm
+from mmengine.runner import load_checkpoint
+from mmengine.utils.dl_utils.parrots_wrapper import _BatchNorm
 
 
 from .res_layer import ResLayer

@@ -9,12 +9,11 @@ from detectron2.config import CfgNode
 from lib.torch_utils.solver.lr_scheduler import flat_and_anneal_lr_scheduler
 from lib.torch_utils.solver.optimize import _get_optimizer
 from lib.torch_utils.solver.grad_clip_d2 import maybe_add_gradient_clipping
-from mmcv.runner.optimizer import (
+from mmengine.optim.optimizer import (
     OPTIMIZERS,
-    DefaultOptimizerConstructor,
-    build_optimizer,
+    build_optim_wrapper,
 )
-from mmcv.utils import build_from_cfg
+from mmengine.registry import build_from_cfg
 
 
 __all__ = [
@@ -92,10 +91,10 @@ def my_build_optimizer(cfg: CfgNode, model: torch.nn.Module) -> torch.optim.Opti
     if cfg.SOLVER.OPTIMIZER_CFG != "":
         optim_cfg = eval(cfg.SOLVER.OPTIMIZER_CFG)
         register_optimizer(optim_cfg["type"])
-        optimizer = build_optimizer(model, optim_cfg)
+        optimizer = build_optim_wrapper(model, optim_cfg)
     else:
         # otherwise use this d2 builder
-        optimizer = build_optimizer_d2(cfg, model)
+        optimizer = build_optim_wrapper(cfg, model)
     return maybe_add_gradient_clipping(cfg, optimizer)
 
 

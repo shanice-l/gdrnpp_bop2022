@@ -2,7 +2,7 @@ import pickle
 import os
 from detectron2.utils.file_io import PathManager
 from detectron2.checkpoint import DetectionCheckpointer
-from mmcv.runner.checkpoint import (
+from mmengine.runner.checkpoint import (
     _load_checkpoint,
     load_state_dict,
     _process_mmcls_checkpoint,

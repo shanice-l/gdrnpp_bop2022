@@ -5,7 +5,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.runner import load_checkpoint
+from mmengine.runner import load_checkpoint
 from detectron2.utils.events import get_event_storage
 from core.utils.solver_utils import build_optimizer_with_params
 from lib.torch_utils.layers.layer_utils import soft_argmax

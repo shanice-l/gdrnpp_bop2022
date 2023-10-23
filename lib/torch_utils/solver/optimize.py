@@ -2,7 +2,7 @@ import re
 import torch
 from torch.nn.utils import clip_grad
 import mmcv
-from mmcv.runner import obj_from_dict
+# from mmcv.runner import obj_from_dict
 from lib.utils import logger
 from lib.utils.utils import msg
 

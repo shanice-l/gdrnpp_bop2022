@@ -8,7 +8,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 from core.utils.solver_utils import build_optimizer_with_params
 from detectron2.utils.events import get_event_storage
-from mmcv.runner import load_checkpoint
+from mmengine.runner import load_checkpoint
 
 from ..losses.coor_cross_entropy import CrossEntropyHeatmapLoss
 from ..losses.l2_loss import L2Loss

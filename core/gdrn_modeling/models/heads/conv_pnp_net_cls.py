@@ -1,7 +1,7 @@
 import torch
 from torch import nn
 from torch.nn.modules.batchnorm import _BatchNorm
-from mmcv.cnn import normal_init, constant_init
+from mmengine.model import normal_init, constant_init
 from lib.torch_utils.layers.layer_utils import get_norm, get_nn_act_func
 from lib.torch_utils.layers.dropblock import DropBlock2D, LinearScheduler
 from timm.models.layers import StdConv2d

@@ -1,7 +1,7 @@
 import torch.nn as nn
 import torch
 from torchvision.models.resnet import BasicBlock, Bottleneck
-from mmcv.cnn import normal_init, constant_init
+from mmengine.model import normal_init, constant_init
 
 
 # Specification

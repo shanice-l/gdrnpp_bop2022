@@ -3,7 +3,7 @@ import os
 import os.path as osp
 import sys
 import mmcv
-from mmcv import DictAction
+from mmengine.config import DictAction
 import torch
 import PIL
 from detectron2.utils.env import seed_all_rng

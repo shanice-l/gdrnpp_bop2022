@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from torch.nn import functional as F
 from torch.nn.modules.batchnorm import _BatchNorm
-from mmcv.cnn import normal_init, constant_init
+from mmengine.model import normal_init, constant_init
 from .resnet import resnet18, resnet50, resnet34
 
 

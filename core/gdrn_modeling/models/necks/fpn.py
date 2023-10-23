@@ -1,7 +1,8 @@
 # https://github.com/open-mmlab/mmsegmentation/blob/master/mmseg/models/necks/fpn.py
 import torch.nn as nn
 import torch.nn.functional as F
-from mmcv.cnn import ConvModule, xavier_init
+from mmcv.cnn import ConvModule
+from mmengine.model import xavier_init
 
 
 class FPN(nn.Module):

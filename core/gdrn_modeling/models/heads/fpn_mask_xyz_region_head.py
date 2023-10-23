@@ -3,7 +3,7 @@ import numpy as np
 import torch
 import torch.nn as nn
 from torch.nn.modules.batchnorm import _BatchNorm
-from mmcv.cnn import normal_init, constant_init
+from mmengine.model import normal_init, constant_init
 
 from lib.torch_utils.layers.layer_utils import resize
 from lib.torch_utils.layers.conv_module import ConvModule

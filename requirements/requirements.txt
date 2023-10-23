@@ -7,7 +7,7 @@ pycocotools
 cffi
 ninja
 black
-docformatter
+docformatter==1.5.1
 setproctitle
 meshplex
 OpenEXR
@@ -32,7 +32,7 @@ open3d
 fvcore
 tensorboardX
 einops
-pytorch3d
+# pytorch3d
 timm==0.6.7
 glfw
 imageio

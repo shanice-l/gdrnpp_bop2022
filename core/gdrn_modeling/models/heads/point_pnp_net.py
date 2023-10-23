@@ -2,7 +2,7 @@ import torch
 from torch import nn
 from torch.nn.modules.batchnorm import _BatchNorm
 import torch.nn.functional as F
-from mmcv.cnn import normal_init, constant_init
+from mmengine.model import normal_init, constant_init
 
 
 def SoftPool(x, N_p=32):

@@ -11,6 +11,7 @@ sys.path.insert(0, PROJ_ROOT)
 import time
 from collections import OrderedDict
 import mmcv
+import mmengine
 import numpy as np
 from tqdm import tqdm
 from transforms3d.quaternions import mat2quat, quat2mat
@@ -106,17 +107,17 @@ class YCBV_Dataset:
                 if scene_id not in scene_gt_dicts:
                     scene_gt_file = osp.join(image_root, f"{scene_id:06d}/scene_gt.json")
                     assert osp.exists(scene_gt_file), scene_gt_file
-                    scene_gt_dicts[scene_id] = mmcv.load(scene_gt_file)
+                    scene_gt_dicts[scene_id] = mmengine.fileio.load(scene_gt_file)
 
                 if scene_id not in scene_gt_info_dicts:
                     scene_gt_info_file = osp.join(image_root, f"{scene_id:06d}/scene_gt_info.json")
                     assert osp.exists(scene_gt_info_file), scene_gt_info_file
-                    scene_gt_info_dicts[scene_id] = mmcv.load(scene_gt_info_file)
+                    scene_gt_info_dicts[scene_id] = mmengine.fileio.load(scene_gt_info_file)
 
                 if scene_id not in scene_cam_dicts:
                     scene_cam_file = osp.join(image_root, f"{scene_id:06d}/scene_camera.json")
                     assert osp.exists(scene_cam_file), scene_cam_file
-                    scene_cam_dicts[scene_id] = mmcv.load(scene_cam_file)
+                    scene_cam_dicts[scene_id] = mmengine.fileio.load(scene_cam_file)
         ######################################################
         scene_im_ids = sorted(scene_im_ids)  # sort to make it reproducible
         dataset_dicts = []
@@ -305,7 +306,7 @@ class YCBV_Dataset:
 
         if osp.exists(cache_path) and self.use_cache:
             logger.info("load cached dataset dicts from {}".format(cache_path))
-            return mmcv.load(cache_path)
+            return mmengine.fileio.load(cache_path)
 
         logger.info("loading dataset dicts: {}".format(self.name))
         t_start = time.perf_counter()
@@ -321,8 +322,8 @@ class YCBV_Dataset:
             dataset_dicts = dataset_dicts[: self.num_to_load]
         logger.info("loaded {} dataset dicts, using {}s".format(len(dataset_dicts), time.perf_counter() - t_start))
 
-        mmcv.mkdir_or_exist(osp.dirname(cache_path))
-        mmcv.dump(dataset_dicts, cache_path, protocol=4)
+        mmengine.utils.path.mkdir_or_exist(osp.dirname(cache_path))
+        mmengine.fileio.dump(dataset_dicts, cache_path, protocol=4)
         logger.info("Dumped dataset_dicts to {}".format(cache_path))
         return dataset_dicts
 
@@ -330,7 +331,7 @@ class YCBV_Dataset:
     def models_info(self):
         models_info_path = osp.join(self.models_root, "models_info.json")
         assert osp.exists(models_info_path), models_info_path
-        models_info = mmcv.load(models_info_path)  # key is str(obj_id)
+        models_info = mmengine.fileio.load(models_info_path)  # key is str(obj_id)
         return models_info
 
     @lazy_property
@@ -339,7 +340,7 @@ class YCBV_Dataset:
         cache_path = osp.join(self.models_root, "models_{}.pkl".format(self.name))
         if osp.exists(cache_path) and self.use_cache:
             # dprint("{}: load cached object models from {}".format(self.name, cache_path))
-            return mmcv.load(cache_path)
+            return mmengine.fileio.load(cache_path)
 
         models = []
         for obj_name in self.objs:
@@ -356,7 +357,7 @@ class YCBV_Dataset:
 
             models.append(model)
         logger.info("cache models to {}".format(cache_path))
-        mmcv.dump(models, cache_path, protocol=4)
+        mmengine.fileio.dump(models, cache_path, protocol=4)
         return models
 
     def image_aspect_ratio(self):
@@ -660,7 +661,7 @@ def test_vis():
             img_vis_kpts2d = misc.draw_projected_box3d(img_vis.copy(), kpts_2d[_i])
             if with_xyz:
                 xyz_path = annos[_i]["xyz_path"]
-                xyz_info = mmcv.load(xyz_path)
+                xyz_info = mmengine.fileio.load(xyz_path)
                 x1, y1, x2, y2 = xyz_info["xyxy"]
                 xyz_crop = xyz_info["xyz_crop"].astype(np.float32)
                 xyz = np.zeros((imH, imW, 3), dtype=np.float32)

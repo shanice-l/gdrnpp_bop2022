@@ -4,7 +4,15 @@ project(CppEGLRenderer)
 
 set(CMAKE_CXX_STANDARD 11)
 
-find_package(CUDA REQUIRED)
+# include_directories("${CUDA_INCLUDE_DIRS}")
+# message(STATUS "Looking for CUDA...")
+# message(STATUS "CUDA_INCLUDE_DIRS set to: ${CUDA_INCLUDE_DIRS}")
+
+# find_package(CUDA REQUIRED)
+enable_language(CUDA)
+# find_path(CUDA_INCLUDE_DIRS cuda_runtime.h HINTS /usr/local/cuda/include)
+# include_directories(${CUDA_INCLUDE_DIRS})
+message(STATUS "CUDA_LIBRARIES: ${CUDA_LIBRARIES}")
 set(CUDA_LIBRARIES PUBLIC ${CUDA_LIBRARIES})
 
 
@@ -22,10 +30,13 @@ find_library(EGL_LIBRARIES NAMES egl EGL REQUIRED)
 
 
 include_directories(SYSTEM ${EGL_INCLUDE_DIR} ${OPENGL_INCLUDE_DIR})
+link_directories("/usr/local/cuda-11.8/lib" "/usr/local/cuda-11.8/targets/x86_64-linux/lib")
 
-cuda_add_library(CppEGLRenderer MODULE  cpp/egl_renderer.cpp)
+# cuda_add_library(CppEGLRenderer MODULE  cpp/egl_renderer.cpp)
+add_library(CppEGLRenderer MODULE cpp/egl_renderer.cpp)
+target_include_directories(CppEGLRenderer PRIVATE "/usr/local/cuda-11.8/include" "/usr/local/cuda-11.8/targets/x86_64-linux/include")
 # Equivalent to pass flags -lGL, -lGLU and -lglut
-target_link_libraries(CppEGLRenderer PRIVATE pybind11::module dl pthread GL)
+target_link_libraries(CppEGLRenderer PRIVATE pybind11::module dl pthread GL "/usr/local/cuda-11.8/targets/x86_64-linux/lib/libcudart.so")
 set_target_properties(CppEGLRenderer PROPERTIES PREFIX "${PYTHON_MODULE_PREFIX}"
                                          SUFFIX "${PYTHON_MODULE_EXTENSION}")
 

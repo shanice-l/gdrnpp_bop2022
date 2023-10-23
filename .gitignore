@@ -4,8 +4,10 @@ core/csrc/uncertainty_pnp/ceres/
 # output dir
 /data
 /datasets
+/lib/bop_renderer
 *.so.*
 *.tar.gz
+*.tar.xz
 *.egg-info*
 output
 YOLOX_outputs/
