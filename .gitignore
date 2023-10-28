@@ -5,8 +5,9 @@ core/csrc/uncertainty_pnp/ceres/
 /data
 /datasets
 /lib/bop_renderer
-/llvm-4.0.1.src
-/mesa-17.1.6
+/llvm-*
+/mesa-*
+/glu-*
 *.so.*
 *.tar.gz
 *.tar.xz

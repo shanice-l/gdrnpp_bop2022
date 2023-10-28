@@ -29,7 +29,7 @@ eval_path = r"output/bop_eval/"
 output_path = r"output/bop_output/"
 
 # For offscreen C++ rendering: Path to the build folder of bop_renderer (github.com/thodan/bop_renderer).
-bop_renderer_path = r"bop_renderer/build"
+bop_renderer_path = r"lib/bop_renderer/build"
 
 # Executable of the MeshLab server.
 # meshlab_server_path = r'/path/to/meshlabserver.exe'

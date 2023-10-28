@@ -239,7 +239,7 @@ def summary_scores(
 
     tabs_col2 = []
     for score_path in sorted_score_paths:
-        score_dict = mmcv.load(score_path)
+        score_dict =  mmengine.fileio.load(score_path)
         if obj_ids is None:
             sel_obj_ids = [int(_id) for _id in score_dict["obj_recalls"].keys()]
         else:
