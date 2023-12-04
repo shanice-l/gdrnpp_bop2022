@@ -108,7 +108,9 @@ renderer_mode = "+".join(renderer_modalities)
 
 # Create a renderer.
 width, height = dp_split["im_size"]
+print("About to create renderer")
 ren = renderer.create_renderer(width, height, p["renderer_type"], mode=renderer_mode, shading="flat")
+print("Renderer created")
 
 # Load object models.
 models = {}

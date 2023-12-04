@@ -17,7 +17,7 @@ import logging
 log.setLevel(logging.WARNING)  # Options: ERROR, WARNING, DEBUG, INFO.
 
 # Set backend (http://glumpy.readthedocs.io/en/latest/api/app-backends.html).
-# app.use('glfw')  # Options: 'glfw', 'qt5', 'pyside', 'pyglet'.
+app.use('glfw')  # Options: 'glfw', 'qt5', 'pyside', 'pyglet'.
 
 # RGB vertex shader.
 _rgb_vertex_code = """

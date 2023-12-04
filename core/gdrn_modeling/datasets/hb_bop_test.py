@@ -6,6 +6,7 @@ import sys
 import time
 from collections import OrderedDict
 import mmcv
+import mmengine
 import numpy as np
 from tqdm import tqdm
 from transforms3d.quaternions import mat2quat, quat2mat
@@ -94,7 +95,7 @@ class HB_BOP_TEST_Dataset:
 
         if osp.exists(cache_path) and self.use_cache:
             logger.info("load cached dataset dicts from {}".format(cache_path))
-            return mmcv.load(cache_path)
+            return mmengine.fileio.load(cache_path)
 
         t_start = time.perf_counter()
 
@@ -105,7 +106,7 @@ class HB_BOP_TEST_Dataset:
         im_id_global = 0
 
         if True:
-            targets = mmcv.load(self.ann_file)
+            targets = mmengine.fileio.load(self.ann_file)
             scene_im_ids = [(item["scene_id"], item["im_id"]) for item in targets]
             scene_im_ids = sorted(list(set(scene_im_ids)))
 
@@ -121,7 +122,7 @@ class HB_BOP_TEST_Dataset:
                 # if scene_id not in gt_info_dicts:
                 #     gt_info_dicts[scene_id] = mmcv.load(osp.join(scene_root, 'scene_gt_info.json'))  # bbox_obj, bbox_visib
                 if scene_id not in cam_dicts:
-                    cam_dicts[scene_id] = mmcv.load(osp.join(scene_root, "scene_camera.json"))
+                    cam_dicts[scene_id] = mmengine.fileio.load(osp.join(scene_root, "scene_camera.json"))
 
             for scene_id, im_id in tqdm(scene_im_ids):
                 str_im_id = str(im_id)
@@ -230,8 +231,8 @@ class HB_BOP_TEST_Dataset:
             dataset_dicts = dataset_dicts[: self.num_to_load]
         logger.info("loaded {} dataset dicts, using {}s".format(len(dataset_dicts), time.perf_counter() - t_start))
 
-        mmcv.mkdir_or_exist(osp.dirname(cache_path))
-        mmcv.dump(dataset_dicts, cache_path, protocol=4)
+        mmengine.utils.path.mkdir_or_exist(osp.dirname(cache_path))
+        mmengine.fileio.dump(dataset_dicts, cache_path, protocol=4)
         logger.info("Dumped dataset_dicts to {}".format(cache_path))
         return dataset_dicts
 
@@ -239,7 +240,7 @@ class HB_BOP_TEST_Dataset:
     def models_info(self):
         models_info_path = osp.join(self.models_root, "models_info.json")
         assert osp.exists(models_info_path), models_info_path
-        models_info = mmcv.load(models_info_path)  # key is str(obj_id)
+        models_info = mmengine.fileio.load(models_info_path)  # key is str(obj_id)
         return models_info
 
     @lazy_property

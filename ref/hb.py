@@ -1,6 +1,7 @@
 # encoding: utf-8
 """This file includes necessary params, info."""
 import mmcv
+import mmengine
 import os.path as osp
 
 import numpy as np
@@ -97,7 +98,7 @@ def get_models_info():
     """key is str(obj_id)"""
     models_info_path = osp.join(model_dir, "models_info.json")
     assert osp.exists(models_info_path), models_info_path
-    models_info = mmcv.load(models_info_path)  # key is str(obj_id)
+    models_info = mmengine.fileio.load(models_info_path)  # key is str(obj_id)
     return models_info
 
 
@@ -106,7 +107,7 @@ def get_fps_points():
     core/gdrn_modeling/tools/hb/hb_1_compute_fps.py."""
     fps_points_path = osp.join(model_dir, "fps_points.pkl")
     assert osp.exists(fps_points_path), fps_points_path
-    fps_dict = mmcv.load(fps_points_path)
+    fps_dict = mmengine.fileio.load(fps_points_path)
     return fps_dict
 
 
