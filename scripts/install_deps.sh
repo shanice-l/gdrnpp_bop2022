@@ -48,12 +48,12 @@ fi
 
 # conda install ipython
 
-pip install -r requirements/requirements.txt
+# pip install -r requirements/requirements.txt
 
 # pip install kornia
 
-pip uninstall pillow
-CC="cc -mavx2" pip install -U --force-reinstall pillow-simd
+# pip uninstall pillow
+# CC="cc -mavx2" pip install -U --force-reinstall pillow-simd
 
 # install kaolin
 

@@ -3,8 +3,6 @@
 #include <iostream>
 #include <vector>
 
-extern THCState* state;
-
 
 #define CHECK_CUDA(x)                                          \
   do {                                                         \

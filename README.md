@@ -36,9 +36,16 @@ Download the trained models at [Onedrive](https://mailstsinghuaeducn-my.sharepoi
 * Ubuntu 18.04/20.04, CUDA 10.1/10.2/11.6, python >= 3.7, PyTorch >= 1.9, torchvision
 * Install `detectron2` from [source](https://github.com/facebookresearch/detectron2)
 * `sh scripts/install_deps.sh`
-* Compile the cpp extension for `farthest points sampling (fps)`:
+* Compile the cpp extensions for 
+1. `farthest points sampling (fps)`
+2. `flow`
+3. `uncertainty pnp`
+4. `ransac_voting`
+5. `chamfer distance`
+6. `egl renderer`
+
     ```
-    sh core/csrc/compile.sh
+    sh ./scripts/compile_all.sh
     ```
 
 ## Detection
