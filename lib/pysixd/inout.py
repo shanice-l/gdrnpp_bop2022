@@ -231,11 +231,11 @@ def load_scene_camera(path):
 
     for im_id in scene_camera.keys():
         if "cam_K" in scene_camera[im_id].keys():
-            scene_camera[im_id]["cam_K"] = np.array(scene_camera[im_id]["cam_K"], np.float).reshape((3, 3))
+            scene_camera[im_id]["cam_K"] = np.array(scene_camera[im_id]["cam_K"], np.float32).reshape((3, 3))
         if "cam_R_w2c" in scene_camera[im_id].keys():
-            scene_camera[im_id]["cam_R_w2c"] = np.array(scene_camera[im_id]["cam_R_w2c"], np.float).reshape((3, 3))
+            scene_camera[im_id]["cam_R_w2c"] = np.array(scene_camera[im_id]["cam_R_w2c"], np.float32).reshape((3, 3))
         if "cam_t_w2c" in scene_camera[im_id].keys():
-            scene_camera[im_id]["cam_t_w2c"] = np.array(scene_camera[im_id]["cam_t_w2c"], np.float).reshape((3, 1))
+            scene_camera[im_id]["cam_t_w2c"] = np.array(scene_camera[im_id]["cam_t_w2c"], np.float32).reshape((3, 1))
     return scene_camera
 
 
@@ -574,7 +574,7 @@ def load_ply(path, vertex_scale=1.0):
     model = {}
     if texture_file is not None:
         model["texture_file"] = texture_file
-    model["pts"] = np.zeros((n_pts, 3), np.float)
+    model["pts"] = np.zeros((n_pts, 3), np.float32)
     if n_faces > 0:
         model["faces"] = np.zeros((n_faces, face_n_corners), np.float)
 
