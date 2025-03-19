@@ -69,7 +69,7 @@ Download the pretrained model at [Onedrive](https://mailstsinghuaeducn-my.sharep
 
 ## Pose Estimation
 
-The difference between this repo and GDR-Net (CVPR2021) mainly including:
+The difference between this repo and GDR-Net (CVPR2021) mainly includes:
 
 * Domain Randomization: We used stronger domain randomization operations than the conference version during training.
 * Network Architecture: We used a more powerful backbone Convnext rather than resnet-34,  and two  mask heads for predicting amodal mask and visible mask separately.
@@ -109,7 +109,7 @@ If you use GDRNPP in your research, please use the following BibTeX entries.
 
 ```BibTeX
 @article{liu2025gdrnpp,
-  title     = {Occlusion-Aware Self-Supervised Monocular {6D} Object Pose Estimation},
+  title     = {GDRNPP: A Geometry-guided and Fully Learning-based Object Pose Estimator},
   author    = {Liu, Xingyu and Zhang, Ruida and Zhang, Chenyangguang and Wang, Gu and Tang, Jiwen and Li, Zhigang and Ji, Xiangyang},
   journal   = {IEEE Transactions on Pattern Analysis and Machine Intelligence (TPAMI)},
   year      = {2025},
