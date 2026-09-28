@@ -53,6 +53,25 @@ Download the trained models at [ModelScope](https://www.modelscope.cn/models/wan
     sh ./scripts/compile_all.sh
     ```
 
+### Intel XPU inference
+
+RGB pose inference supports NVIDIA CUDA, Intel XPU, and CPU. The runtime selects
+CUDA when available, otherwise XPU, otherwise CPU. Set `GDRN_DEVICE` to `cuda`,
+`xpu`, or `cpu` to force a backend.
+
+Install an XPU-enabled PyTorch build instead of CUDA wheels:
+
+```bash
+python -m pip install torch torchvision torchaudio \
+    --index-url https://download.pytorch.org/whl/xpu
+GDRN_DEVICE=xpu ./core/gdrn_modeling/test_gdrn.sh \
+    <config_path> 0 <ckpt_path>
+```
+
+XPU support is inference-only and uses FP32. Online EGL rendering, depth
+refinement, training, and the custom CUDA extensions remain CUDA-only. Use a
+standard RGB evaluation configuration with precomputed detections and XYZ data.
+
 ## Detection
 
 We adopt yolox as the detection method. We used stronger data augmentation and ranger optimizer.
