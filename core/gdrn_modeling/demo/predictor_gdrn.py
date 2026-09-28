@@ -15,6 +15,7 @@ from core.gdrn_modeling.engine.engine_utils import get_out_mask, get_out_coor, b
 from core.gdrn_modeling.engine.gdrn_evaluator import get_pnp_ransac_pose
 from core.utils.my_checkpoint import MyCheckpointer
 from core.utils.data_utils import crop_resize_by_warp_affine, get_2d_coord_np
+from core.utils.device_utils import inference_device, synchronize_device
 from lib.vis_utils.image import vis_image_mask_bbox_cv2, vis_image_bboxes_cv2, vis_image_mask_cv2
 from lib.utils.utils import iprint
 from lib.utils.time_utils import get_time_str
@@ -88,8 +89,9 @@ class GdrnPredictor():
                 [0., 0., 1.]])
             self.depth_scale = camera_json['depth_scale']
 
+        device_type = torch.device(self.cfg.MODEL.DEVICE).type
         model_lite = Lite(
-            accelerator="gpu",
+            accelerator="gpu" if device_type == "cuda" else "cpu",
             strategy=None,
             devices=1,
             num_nodes=1,
@@ -141,8 +143,7 @@ class GdrnPredictor():
                     roi_coord_2d_rel=data_dict.get("roi_coord_2d_rel", None),
                     roi_extents=data_dict.get("roi_extent", None),
                 )
-            if torch.cuda.is_available():
-                torch.cuda.synchronize()
+            synchronize_device(self.cfg.MODEL.DEVICE)
 
         return out_dict
 
@@ -211,7 +212,9 @@ class GdrnPredictor():
         out_rots = out_dict["rot"].detach().to(torch.device("cpu")).numpy()
         out_transes = out_dict["trans"].detach().to(torch.device("cpu")).numpy()
 
-        zoom_K = batch_data_inference_roi(cfg, [inputs])['roi_zoom_K']
+        zoom_K = batch_data_inference_roi(
+            cfg, [inputs], device=cfg.MODEL.DEVICE
+        )['roi_zoom_K']
 
         out_i = -1
         for i, _input in enumerate([inputs]):
@@ -466,11 +469,19 @@ class GdrnPredictor():
             else:
                 dtype = torch.float32
             if key in dataset_dict:
-                batch[key] = torch.cat([dataset_dict[key]], dim=0).to(device='cuda', dtype=dtype, non_blocking=True)
+                batch[key] = torch.cat([dataset_dict[key]], dim=0).to(
+                    device=self.cfg.MODEL.DEVICE, dtype=dtype, non_blocking=True
+                )
 
-        batch["roi_cam"] = torch.cat([dataset_dict["cam"]], dim=0).to('cuda', non_blocking=True)
-        batch["roi_center"] = torch.cat([dataset_dict["bbox_center"]], dim=0).to('cuda', non_blocking=True)
-        batch["bbox_center"] = torch.cat([dataset_dict["bbox_center"]], dim=0).to('cuda', non_blocking=True)#roi_infos["bbox_center"]
+        batch["roi_cam"] = torch.cat([dataset_dict["cam"]], dim=0).to(
+            self.cfg.MODEL.DEVICE, non_blocking=True
+        )
+        batch["roi_center"] = torch.cat([dataset_dict["bbox_center"]], dim=0).to(
+            self.cfg.MODEL.DEVICE, non_blocking=True
+        )
+        batch["bbox_center"] = torch.cat([dataset_dict["bbox_center"]], dim=0).to(
+            self.cfg.MODEL.DEVICE, non_blocking=True
+        )
         batch["cam"] = dataset_dict["cam"]
 
         return batch
@@ -504,6 +515,10 @@ class GdrnPredictor():
             cfg.merge_from_dict(args.opts)
         if args.TEST is not None:
             cfg.merge_from_dict(args.TEST)
+        cfg.MODEL.DEVICE = str(inference_device())
+        if torch.device(cfg.MODEL.DEVICE).type != "cuda":
+            cfg.SOLVER.AMP.ENABLED = False
+            cfg.TEST.AMP_TEST = False
         ############## pre-process some cfg options ######################
         # NOTE: check if need to set OUTPUT_DIR automatically
         if cfg.OUTPUT_DIR.lower() == "auto":
@@ -585,7 +600,7 @@ class GdrnPredictor():
 
         # for crop and resize
         bs = batch["roi_cls"].shape[0]
-        tensor_kwargs = {"dtype": torch.float32, "device": "cuda"}
+        tensor_kwargs = {"dtype": torch.float32, "device": self.cfg.MODEL.DEVICE}
         rois_xy0 = batch["roi_center"] - batch["scale"].view(bs, -1) / 2  # bx2
         rois_xy1 = batch["roi_center"] + batch["scale"].view(bs, -1) / 2  # bx2
         batch["inst_rois"] = torch.cat([torch.arange(bs, **tensor_kwargs).view(-1, 1), rois_xy0, rois_xy1], dim=1)
