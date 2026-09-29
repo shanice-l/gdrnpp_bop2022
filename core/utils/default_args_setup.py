@@ -143,9 +143,16 @@ def my_default_setup(cfg, args):
         cfg.dump(path)
         logger.info("Full config saved to {}".format(path))
 
-    assert (
-        args.num_gpus <= torch.cuda.device_count() and args.num_gpus >= 1
-    ), f"args.num_gpus: {args.num_gpus}, available num gpus: {torch.cuda.device_count()}"
+    device_type = torch.device(cfg.MODEL.DEVICE).type
+    if device_type == "cuda":
+        available_devices = torch.cuda.device_count()
+    elif device_type == "xpu":
+        available_devices = torch.xpu.device_count()
+    else:
+        available_devices = 1
+    assert 1 <= args.num_gpus <= available_devices, (
+        f"args.num_gpus: {args.num_gpus}, available {device_type} devices: {available_devices}"
+    )
 
     # make sure each worker has a different, yet deterministic seed if specified
     seed_all_rng(None if cfg.SEED < 0 else cfg.SEED + rank)
