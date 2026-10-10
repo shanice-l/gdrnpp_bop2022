@@ -26,6 +26,7 @@ cv2.ocl.setUseOpenCL(False)
 cur_dir = osp.dirname(osp.abspath(__file__))
 sys.path.insert(0, osp.join(cur_dir, "../../"))
 from core.utils.default_args_setup import my_default_argument_parser, my_default_setup
+from core.utils.device_utils import inference_device
 from core.utils.my_setup import setup_for_distributed
 from core.utils.my_checkpoint import MyCheckpointer
 from core.utils import my_comm as comm
@@ -56,6 +57,10 @@ def setup(args):
     cfg = Config.fromfile(args.config_file)
     if args.opts is not None:
         cfg.merge_from_dict(args.opts)
+    cfg.MODEL.DEVICE = str(inference_device())
+    if torch.device(cfg.MODEL.DEVICE).type != "cuda":
+        cfg.SOLVER.AMP.ENABLED = False
+        cfg.TEST.AMP_TEST = False
     ############## pre-process some cfg options ######################
     # NOTE: check if need to set OUTPUT_DIR automatically
     if cfg.OUTPUT_DIR.lower() == "auto":
@@ -162,6 +167,9 @@ class Lite(GDRN_Lite):
         # the model is moved automatically to the right device.
         if optimizer is not None:
             model, optimizer = self.setup(model, optimizer)
+        elif torch.device(cfg.MODEL.DEVICE).type == "xpu":
+            if not args.eval_only:
+                raise RuntimeError("Intel XPU support is limited to inference")
         else:
             model = self.setup(model)
 
@@ -193,11 +201,15 @@ class Lite(GDRN_Lite):
 def main(args):
     cfg = setup(args)
 
+    device_type = torch.device(cfg.MODEL.DEVICE).type
+    if device_type == "xpu" and not args.eval_only:
+        raise RuntimeError("Intel XPU support is limited to inference")
+
     logger.info(f"start to train with {args.num_machines} nodes and {args.num_gpus} GPUs")
     if args.num_gpus > 1 and args.strategy is None:
         args.strategy = "ddp"
     Lite(
-        accelerator="gpu",
+        accelerator="gpu" if device_type == "cuda" else "cpu",
         strategy=args.strategy,
         devices=args.num_gpus,
         num_nodes=args.num_machines,

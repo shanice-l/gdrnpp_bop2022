@@ -23,6 +23,7 @@ from detectron2.evaluation import DatasetEvaluator, DatasetEvaluators, inference
 from detectron2.utils.logger import log_every_n_seconds, log_first_n
 
 from core.utils.my_comm import all_gather, get_world_size, is_main_process, synchronize
+from core.utils.device_utils import synchronize_device
 from lib.pysixd import inout, misc
 from lib.pysixd.pose_error import te
 from lib.utils.mask_utils import binary_mask_to_rle
@@ -710,7 +711,7 @@ def gdrn_inference_on_dataset(cfg, model, data_loader, evaluator, amp_test=False
             # process input
             if not isinstance(inputs, list):  # bs=1
                 inputs = [inputs]
-            batch = batch_data(cfg, inputs, phase="test")
+            batch = batch_data(cfg, inputs, device=cfg.MODEL.DEVICE, phase="test")
             if evaluator.train_objs is not None:
                 roi_labels = batch["roi_cls"].cpu().numpy().tolist()
                 obj_names = [evaluator.obj_names[_l] for _l in roi_labels]
@@ -745,8 +746,7 @@ def gdrn_inference_on_dataset(cfg, model, data_loader, evaluator, amp_test=False
                     roi_coord_2d_rel=batch.get("roi_coord_2d_rel", None),
                     roi_extents=batch.get("roi_extent", None),
                 )
-            if torch.cuda.is_available():
-                torch.cuda.synchronize()
+            synchronize_device(cfg.MODEL.DEVICE)
             cur_compute_time = time.perf_counter() - start_compute_time
             total_compute_time += cur_compute_time
             # NOTE: added
@@ -883,7 +883,7 @@ def gdrn_save_result_of_dataset(cfg, model, data_loader, output_dir, dataset_nam
             # process input ----------------------------------------------------------
             if not isinstance(inputs, list):
                 inputs = [inputs]
-            batch = batch_data(cfg, inputs, phase="test")
+            batch = batch_data(cfg, inputs, device=cfg.MODEL.DEVICE, phase="test")
             if train_objs is not None:
                 roi_labels = batch["roi_cls"].cpu().numpy().tolist()
                 cur_obj_names = [obj_names[_l] for _l in roi_labels]  # obj names in this test batch
@@ -906,8 +906,7 @@ def gdrn_save_result_of_dataset(cfg, model, data_loader, output_dir, dataset_nam
                     roi_coord_2d_rel=batch.get("roi_coord_2d_rel", None),
                     roi_extents=batch.get("roi_extent", None),
                 )
-            if torch.cuda.is_available():
-                torch.cuda.synchronize()
+            synchronize_device(cfg.MODEL.DEVICE)
             cur_compute_time = time.perf_counter() - start_compute_time
             total_compute_time += cur_compute_time
 
@@ -917,7 +916,7 @@ def gdrn_save_result_of_dataset(cfg, model, data_loader, output_dir, dataset_nam
 
             # for crop and resize
             bs = batch["roi_cls"].shape[0]
-            tensor_kwargs = {"dtype": torch.float32, "device": "cuda"}
+            tensor_kwargs = {"dtype": torch.float32, "device": cfg.MODEL.DEVICE}
             rois_xy0 = batch["roi_center"] - batch["scale"].view(bs, -1) / 2  # bx2
             rois_xy1 = batch["roi_center"] + batch["scale"].view(bs, -1) / 2  # bx2
             batch["inst_rois"] = torch.cat([torch.arange(bs, **tensor_kwargs).view(-1, 1), rois_xy0, rois_xy1], dim=1)
