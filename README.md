@@ -44,10 +44,9 @@ Download the trained models at [ModelScope](https://www.modelscope.cn/models/wan
 * Compile the cpp extensions for 
 1. `farthest points sampling (fps)`
 2. `flow`
-3. `uncertainty pnp`
-4. `ransac_voting`
-5. `chamfer distance`
-6. `egl renderer`
+3. `ransac_voting`
+4. `chamfer distance`
+5. `egl renderer`
 
     ```
     sh ./scripts/compile_all.sh

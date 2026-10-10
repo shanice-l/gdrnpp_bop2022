@@ -46,28 +46,8 @@ sudo apt-get install -y libglew-dev
 # export LD_LIBRARY_PATH=/usr/lib64:$LD_LIBRARY_PATH
 fi
 
-# conda install ipython
 
-pip install -r requirements/requirements.txt
-
-# pip install kornia
+pip install -r requirements.txt
 
 pip uninstall pillow
 CC="cc -mavx2" pip install -U --force-reinstall pillow-simd
-
-# install kaolin
-
-# (optional) install the nvidia version which is cpp-accelerated
-# git clone https://github.com/NVIDIA/cocoapi.git cocoapi_nvidia
-# cd cocoapi_nvidia/PythonAPI
-# make
-# python setup.py build develop
-
-# install detectron2
-# git clone https://github.com/facebookresearch/detectron2.git
-# cd detectron2 && pip install -e .
-
-# install adet  # https://github.com/aim-uofa/adet.git
-# git clone https://github.com/aim-uofa/adet.git
-# cd adet
-# python setup.py build develop
